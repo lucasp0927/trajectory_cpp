@@ -7,10 +7,10 @@ LDIR =../lib
 
 LIBS= -lyaml-cpp -lglog -lboost_program_options
 
-_DEPS = ConfigParser.h
+_DEPS = ConfigParser.h Fields.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o ConfigParser.o
+_OBJ = main.o ConfigParser.o Fields.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: %.cpp $(DEPS)

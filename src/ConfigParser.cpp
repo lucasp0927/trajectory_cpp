@@ -41,7 +41,7 @@ void ConfigParser::parse_command_line(int argc, char* argv[])
 void ConfigParser::parse_config_file(string filename)
 {
   LOG(INFO) << "Parse configure YAML file.";
-  YAML::Node config = YAML::LoadFile(filename);
+  config = YAML::LoadFile(filename);
   string scaling = config["fields-config"]["field"]["scaling"].as<string>();
   cout << scaling << endl;
 }
