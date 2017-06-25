@@ -2,6 +2,7 @@
 #include <glog/logging.h>
 #include "ConfigParser.h"
 #include "Fields.h"
+//#include "fileio.h"
 using namespace std;
 
 int main(int argc, char* argv[])
@@ -12,5 +13,5 @@ int main(int argc, char* argv[])
 
   /////
   //  AbstractField AF;
-  VectorField VF;
+   VectorFieldNode<dcomplex,2> VF;
 }

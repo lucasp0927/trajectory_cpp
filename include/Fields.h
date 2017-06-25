@@ -5,52 +5,69 @@
 #include <complex>
 
 using namespace std;
+typedef complex<double> dcomplex;
 
-class AbstractField
+template <typename T,int DIM>
+  class AbstractField
 {
  protected:
  public:
-  int dim;
   AbstractField();
 };
 
-class AbstractScalarField: public AbstractField
+template <typename T, int DIM>
+  class FieldNode: virtual public AbstractField <T, DIM>
+{
+ protected:
+ public:
+  FieldNode();
+};
+
+template <typename T,int DIM>
+  class AbstractScalarField: virtual public AbstractField <T, DIM>
 {
  protected:
  public:
   AbstractScalarField();
 };
 
-class AbstractVectorField: public AbstractField
+template <typename T,int DIM>
+  class AbstractVectorField: virtual public AbstractField <T, DIM>
 {
  protected:
  public:
   AbstractVectorField();
 };
 
-class ScalarFieldNode: public AbstractScalarField
+template <typename T,int DIM>
+  class ScalarFieldNode: public AbstractScalarField <T, DIM>, public FieldNode <T, DIM>
 {
  protected:
-  AbstractField** fields;
+  AbstractField<T, DIM>** fields;
  public:
   ScalarFieldNode();
 };
 
-class VectorFieldNode: public AbstractVectorField
+
+template <typename T,int DIM>
+  class VectorFieldNode: public AbstractVectorField <T, DIM>, public FieldNode <T, DIM>
 {
  protected:
-  AbstractField** fields;
+  AbstractField<T, DIM>** fields;
  public:
   VectorFieldNode();
 };
 
-class ScalarField: public AbstractScalarField
+template <typename T,int DIM>
+  class ScalarField: public AbstractScalarField <T, DIM>
 {
  public:
   ScalarField();
 };
 
-class VectorField: public AbstractVectorField
+
+template <typename T,int DIM>
+  class VectorField: public AbstractVectorField <T, DIM>
 {
  public:
   VectorField();
