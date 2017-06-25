@@ -7,68 +7,78 @@
 using namespace std;
 typedef complex<double> dcomplex;
 
-template <typename T,int DIM>
+template <int DIM>
   class AbstractField
 {
  protected:
  public:
   AbstractField();
+  ~AbstractField() = default;
 };
 
-template <typename T, int DIM>
-  class FieldNode: virtual public AbstractField <T, DIM>
+template <int DIM>
+  class FieldNode: virtual public AbstractField <DIM>
 {
  protected:
  public:
   FieldNode();
+  ~FieldNode() = default;
 };
 
-template <typename T,int DIM>
-  class AbstractScalarField: virtual public AbstractField <T, DIM>
+template <int DIM>
+  class AbstractScalarField: virtual public AbstractField <DIM>
 {
  protected:
  public:
   AbstractScalarField();
+  ~AbstractScalarField() = default;
 };
 
-template <typename T,int DIM>
-  class AbstractVectorField: virtual public AbstractField <T, DIM>
+template <int DIM>
+  class AbstractVectorField: virtual public AbstractField <DIM>
 {
  protected:
  public:
   AbstractVectorField();
+  ~AbstractVectorField() = default;
 };
 
-template <typename T,int DIM>
-  class ScalarFieldNode: public AbstractScalarField <T, DIM>, public FieldNode <T, DIM>
+template <int DIM>
+  class ScalarFieldNode: public AbstractScalarField <DIM>, public FieldNode <DIM>
 {
  protected:
-  AbstractField<T, DIM>** fields;
+  AbstractField<DIM>** fields;
  public:
   ScalarFieldNode();
+  ~ScalarFieldNode() = default;
 };
 
-
-template <typename T,int DIM>
-  class VectorFieldNode: public AbstractVectorField <T, DIM>, public FieldNode <T, DIM>
+template <int DIM>
+  class VectorFieldNode: public AbstractVectorField <DIM>, public FieldNode <DIM>
 {
  protected:
-  AbstractField<T, DIM>** fields;
+  AbstractVectorField<DIM>** fields;
  public:
   VectorFieldNode();
+  ~VectorFieldNode() = default;
 };
 
-template <typename T,int DIM>
-  class ScalarField: public AbstractScalarField <T, DIM>
+template <int DIM, typename T>
+  class ScalarField: public AbstractScalarField <DIM>
 {
+ private:
+  T* field;
  public:
   ScalarField();
+  ~ScalarField() = default;
 };
 
 
-template <typename T,int DIM>
-  class VectorField: public AbstractVectorField <T, DIM>
+template <int DIM, typename T>
+  class VectorField: public AbstractVectorField <DIM>
 {
+ private:
+  T* field;
  public:
   VectorField();
 };

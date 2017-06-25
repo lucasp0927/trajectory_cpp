@@ -7,6 +7,8 @@ template <int DIM>
 class FieldTree
 {
  public:
-
+  FieldNode<DIM>* root;
+  FieldTree(FieldNode<DIM>*);
+  ~FieldTree();
 };
 #endif

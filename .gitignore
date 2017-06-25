@@ -1,3 +1,4 @@
 *.yml
 src/obj/*.o
 main
+*.h5

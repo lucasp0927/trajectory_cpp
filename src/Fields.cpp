@@ -1,82 +1,73 @@
 #include "Fields.h"
-template <typename T,int DIM>
-AbstractField<T, DIM>::AbstractField()
+template <int DIM>
+AbstractField<DIM>::AbstractField()
 {
-  LOG(INFO) << "init AbstractField ";
+  LOG(INFO) << "init AbstractField " << DIM;
 }
 
-template <typename T,int DIM>
-FieldNode<T, DIM>::FieldNode()
+template <int DIM>
+FieldNode<DIM>::FieldNode()
 {
   LOG(INFO) << "init FieldNode ";
 }
 
-template <typename T,int DIM>
-AbstractVectorField<T, DIM>::AbstractVectorField()
+template <int DIM>
+AbstractVectorField<DIM>::AbstractVectorField()
 {
   LOG(INFO) << "init AbstractVectorField";
 }
 
-template <typename T,int DIM>
-AbstractScalarField<T, DIM>::AbstractScalarField()
+template <int DIM>
+AbstractScalarField<DIM>::AbstractScalarField()
 {
   LOG(INFO) << "init AbstractScalarField";
 }
 
-template <typename T,int DIM>
-VectorFieldNode<T, DIM>::VectorFieldNode()
+template <int DIM>
+VectorFieldNode<DIM>::VectorFieldNode()
 {
   LOG(INFO) << "init VectorFieldNode";
 }
 
-template <typename T,int DIM>
-ScalarFieldNode<T, DIM>::ScalarFieldNode()
+template <int DIM>
+ScalarFieldNode<DIM>::ScalarFieldNode()
 {
   LOG(INFO) << "init ScalarFieldNode";
 }
 
-template <typename T,int DIM>
-VectorField<T, DIM>::VectorField()
+template <int DIM,typename T>
+ScalarField<DIM,T>::ScalarField()
 {
-  LOG(INFO) << "init vectorfield";
-}
-
-template <typename T,int DIM>
-ScalarField<T, DIM>::ScalarField()
-{
+  field = nullptr;
   LOG(INFO) << "init scalarfield";
 }
 
+template <int DIM,typename T>
+VectorField<DIM,T>::VectorField()
+{
+  field = nullptr;
+  LOG(INFO) << "init vectorfield";
+}
+
+
 //explicitly instantiating
-template class AbstractField<double,2>;
-template class AbstractField<double,3>;
-template class AbstractField<dcomplex,2>;
-template class AbstractField<dcomplex,3>;
-template class FieldNode<double,2>;
-template class FieldNode<double,3>;
-template class FieldNode<dcomplex,2>;
-template class FieldNode<dcomplex,3>;
-template class AbstractScalarField<double,2>;
-template class AbstractScalarField<double,3>;
-template class AbstractScalarField<dcomplex,2>;
-template class AbstractScalarField<dcomplex,3>;
-template class AbstractVectorField<double,2>;
-template class AbstractVectorField<double,3>;
-template class AbstractVectorField<dcomplex,2>;
-template class AbstractVectorField<dcomplex,3>;
-template class ScalarFieldNode<double,2>;
-template class ScalarFieldNode<double,3>;
-template class ScalarFieldNode<dcomplex,2>;
-template class ScalarFieldNode<dcomplex,3>;
-template class VectorFieldNode<double,2>;
-template class VectorFieldNode<double,3>;
-template class VectorFieldNode<dcomplex,2>;
-template class VectorFieldNode<dcomplex,3>;
-template class ScalarField<double,2>;
-template class ScalarField<double,3>;
-template class ScalarField<dcomplex,2>;
-template class ScalarField<dcomplex,3>;
-template class VectorField<double,2>;
-template class VectorField<double,3>;
-template class VectorField<dcomplex,2>;
-template class VectorField<dcomplex,3>;
+template class AbstractField<2>;
+template class AbstractField<3>;
+template class FieldNode<2>;
+template class FieldNode<3>;
+template class AbstractScalarField<2>;
+template class AbstractScalarField<3>;
+template class AbstractVectorField<2>;
+template class AbstractVectorField<3>;
+template class ScalarFieldNode<2>;
+template class ScalarFieldNode<3>;
+template class VectorFieldNode<2>;
+template class VectorFieldNode<3>;
+template class ScalarField<2,double>;
+template class ScalarField<3,double>;
+template class ScalarField<2,dcomplex>;
+template class ScalarField<3,dcomplex>;
+template class VectorField<2,double>;
+template class VectorField<3,double>;
+template class VectorField<2,dcomplex>;
+template class VectorField<3,dcomplex>;

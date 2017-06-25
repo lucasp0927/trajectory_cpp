@@ -2,7 +2,7 @@
 #include <glog/logging.h>
 #include "ConfigParser.h"
 #include "Fields.h"
-//#include "fileio.h"
+#include "FieldTree.h"
 using namespace std;
 
 int main(int argc, char* argv[])
@@ -13,5 +13,6 @@ int main(int argc, char* argv[])
 
   /////
   //  AbstractField AF;
-   VectorFieldNode<dcomplex,2> VF;
+  FieldNode<2> FN;
+  FieldTree<2> FT(&FN);
 }
