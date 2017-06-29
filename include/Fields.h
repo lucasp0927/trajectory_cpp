@@ -2,6 +2,7 @@
 #define FIELDS_H
 #include <iostream>
 #include <glog/logging.h>
+#include <boost/multi_array.hpp>
 #include <complex>
 
 using namespace std;
@@ -67,7 +68,7 @@ template <int DIM, typename T>
   class ScalarField: public AbstractScalarField <DIM>
 {
  private:
-  T* field;
+  boost::multi_array<T,DIM>* field;
  public:
   ScalarField();
   ~ScalarField() = default;
@@ -78,7 +79,7 @@ template <int DIM, typename T>
   class VectorField: public AbstractVectorField <DIM>
 {
  private:
-  T* field;
+  boost::multi_array<T,DIM+1>* field;
  public:
   VectorField();
 };

@@ -2,7 +2,10 @@
 template <int DIM>
 AbstractField<DIM>::AbstractField()
 {
-  LOG(INFO) << "init AbstractField " << DIM;
+  if (DIM == 2)
+    LOG(INFO) << "init 2D AbstractField";
+  else if (DIM ==3)
+    LOG(INFO) << "init 3D AbstractField";
 }
 
 template <int DIM>
@@ -38,15 +41,21 @@ ScalarFieldNode<DIM>::ScalarFieldNode()
 template <int DIM,typename T>
 ScalarField<DIM,T>::ScalarField()
 {
+  if (DIM==2)
+    LOG(INFO) << "init 2D Scalarfield";
+  else if (DIM==3)
+    LOG(INFO) << "init 3D Scalarfield";
   field = nullptr;
-  LOG(INFO) << "init scalarfield";
 }
 
 template <int DIM,typename T>
 VectorField<DIM,T>::VectorField()
 {
+  if (DIM==2)
+    LOG(INFO) << "init 2D Vectorfield";
+  else if (DIM==3)
+    LOG(INFO) << "init 3D Vectorfield";
   field = nullptr;
-  LOG(INFO) << "init vectorfield";
 }
 
 

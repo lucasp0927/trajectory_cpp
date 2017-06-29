@@ -13,6 +13,6 @@ int main(int argc, char* argv[])
 
   /////
   //  AbstractField AF;
-  FieldNode<2> FN;
-  FieldTree<2> FT(&FN);
+  VectorField<3,dcomplex> FN;
+  //  FieldTree<2> FT(&FN);
 }
