@@ -16,7 +16,8 @@ boost::multi_array<double,2>* const read_double_h5_file_2d(string const filename
 
     hsize_t dims[2];    // dataset dimensions
     rank = filespace.getSimpleExtentDims( dims );
-    assert(rank == 2);
+    if (rank != 2)
+        throw length_error("Incorrect dataset dimension!");
     LOG(INFO) << "dataset rank = " << rank << ", dimensions "
               << (unsigned long)(dims[0]) << " x "
               << (unsigned long)(dims[1]) << endl;
@@ -47,6 +48,11 @@ boost::multi_array<double,2>* const read_double_h5_file_2d(string const filename
       error.printError();
       exit(EXIT_FAILURE);
     }
+  catch (length_error error)
+    {
+      LOG(ERROR) << error.what();
+      exit(EXIT_FAILURE);
+    }
   return data;
 }
 
@@ -66,7 +72,8 @@ boost::multi_array<double,3>* const read_double_h5_file_3d(string const filename
 
     hsize_t dims[3];    // dataset dimensions
     rank = filespace.getSimpleExtentDims( dims );
-    assert(rank == 3);
+    if (rank != 3)
+        throw length_error("Incorrect dataset dimension!");
     LOG(INFO) << "dataset rank = " << rank << ", dimensions "
               << (unsigned long)(dims[0]) << " x "
               << (unsigned long)(dims[1]) << " x "
@@ -99,6 +106,11 @@ boost::multi_array<double,3>* const read_double_h5_file_3d(string const filename
       error.printError();
       exit(EXIT_FAILURE);
     }
+  catch (length_error error)
+    {
+      LOG(ERROR) << error.what();
+      exit(EXIT_FAILURE);
+    }
   return data;
 }
 
@@ -118,7 +130,8 @@ boost::multi_array<double,4>* const read_double_h5_file_4d(string const filename
 
     hsize_t dims[4];    // dataset dimensions
     rank = filespace.getSimpleExtentDims( dims );
-    assert(rank == 4);
+    if (rank != 4)
+        throw length_error("Incorrect dataset dimension!");
     LOG(INFO) << "dataset rank = " << rank << ", dimensions "
               << (unsigned long)(dims[0]) << " x "
               << (unsigned long)(dims[1]) << " x "
@@ -153,6 +166,11 @@ boost::multi_array<double,4>* const read_double_h5_file_4d(string const filename
       error.printError();
       exit(EXIT_FAILURE);
     }
+  catch (length_error error)
+    {
+      LOG(ERROR) << error.what();
+      exit(EXIT_FAILURE);
+    }
   return data;
 }
 
@@ -170,7 +188,7 @@ boost::multi_array<dcomplex,2>* const read_complex_h5_file_2d(string const filen
     for (int i = 0; i < 2; ++i)
       {
         if (real_shape[i] != imag_shape[i])
-            throw length_error("real and imag parts have different shapes!");
+            throw length_error("Real and imag parts have different shapes!");
       }
     data = new boost::multi_array<dcomplex,2>(boost::extents[shape[0]][shape[1]]);
     for (int i = 0; i < (int)shape[0]; i++)
