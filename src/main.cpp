@@ -13,8 +13,10 @@ int main(int argc, char* argv[])
   ConfigParser configparser;
   configparser.parse_command_line(argc, argv);
 
-  auto const* const data = read_double_h5_file_4d("test4.h5","test");
+  auto const* const data = read_complex_h5_file_3d("testc3.h5","test");
   print_multi_array(data);
+  delete data;
+
   /////
   //  AbstractField AF;
   //VectorField<3,dcomplex> FN;
