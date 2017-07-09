@@ -5,9 +5,9 @@
 #include <complex>
 #include <iostream>
 #include <H5Cpp.h>
-#include <cassert>
 #include <stdexcept>
 #include <sstream>
+
 using namespace std;
 using namespace H5;
 typedef complex<double> dcomplex;
