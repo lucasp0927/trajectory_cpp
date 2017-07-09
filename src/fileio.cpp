@@ -255,7 +255,8 @@ mac4* const read_complex_h5_file_4d(string const filename,string const datasetna
 }
 
 template <unsigned long DIM>
-void write_h5_file(boost::multi_array<double,DIM> const* const data, string const filename, string const datasetname)
+void write_h5_file(boost::multi_array<double,DIM> const* const data, string const filename,\
+                   string const datasetname, bool const append)
 {
   const H5std_string FILE_NAME(filename);
   const H5std_string DATASET_NAME(datasetname);
@@ -265,7 +266,11 @@ void write_h5_file(boost::multi_array<double,DIM> const* const data, string cons
     Exception::dontPrint();
     int const rank = data->num_dimensions();
     auto const* const shape = data->shape();
-    H5File* file = new H5File( FILE_NAME, H5F_ACC_TRUNC );
+    H5File* file = nullptr;
+    if (append)
+      file = new H5File( FILE_NAME, H5F_ACC_RDWR );
+    else
+      file = new H5File( FILE_NAME, H5F_ACC_TRUNC );
     /*
     * Create property list for a dataset and set up fill values.
     */
@@ -320,9 +325,7 @@ double const* const real_parts(boost::multi_array<dcomplex,DIM> const* const dat
   auto const* const data_ptr = data->data();
   double* const r_data = new double[arr_size];
   for (unsigned int i = 0; i < arr_size; ++i)
-    {
       r_data[i] = real(data_ptr[i]);
-    }
   return r_data;
 }
 
@@ -333,14 +336,13 @@ double const* const imag_parts(boost::multi_array<dcomplex,DIM> const* const dat
   auto const* const data_ptr = data->data();
   double* const i_data = new double[arr_size];
   for (unsigned int i = 0; i < arr_size; ++i)
-    {
       i_data[i] = imag(data_ptr[i]);
-    }
   return i_data;
 }
 
 template <unsigned long DIM>
-void write_h5_file(boost::multi_array<dcomplex,DIM> const* const data, string const filename, string const datasetname)
+void write_h5_file(boost::multi_array<dcomplex,DIM> const* const data, string const filename,\
+                   string const datasetname, bool const append)
 {
   const H5std_string FILE_NAME(filename);
   const H5std_string DATASET_REAL("/"+datasetname+"/real");
@@ -352,7 +354,11 @@ void write_h5_file(boost::multi_array<dcomplex,DIM> const* const data, string co
     Exception::dontPrint();
     int const rank = data->num_dimensions();
     auto const* const shape = data->shape();
-    H5File* file = new H5File( FILE_NAME, H5F_ACC_TRUNC );
+    H5File* file = nullptr;
+    if (append)
+      file = new H5File( FILE_NAME, H5F_ACC_RDWR );
+    else
+      file = new H5File( FILE_NAME, H5F_ACC_TRUNC );
     Group* group = new Group( file->createGroup( "/"+datasetname ));
 
     /*
@@ -499,12 +505,18 @@ template double const* const real_parts(mac4 const* const data);
 template double const* const imag_parts(mac2 const* const data);
 template double const* const imag_parts(mac3 const* const data);
 template double const* const imag_parts(mac4 const* const data);
-template void write_h5_file(mad2 const* const data, string const filename, string const datasetname);
-template void write_h5_file(mad3 const* const data, string const filename, string const datasetname);
-template void write_h5_file(mad4 const* const data, string const filename, string const datasetname);
-template void write_h5_file(mac2 const* const data, string const filename, string const datasetname);
-template void write_h5_file(mac3 const* const data, string const filename, string const datasetname);
-template void write_h5_file(mac4 const* const data, string const filename, string const datasetname);
+template void write_h5_file(mad2 const* const data, string const filename,\
+                            string const datasetname, bool const append);
+template void write_h5_file(mad3 const* const data, string const filename,\
+                            string const datasetname, bool const append);
+template void write_h5_file(mad4 const* const data, string const filename,\
+                            string const datasetname, bool const append);
+template void write_h5_file(mac2 const* const data, string const filename,\
+                            string const datasetname, bool const append);
+template void write_h5_file(mac3 const* const data, string const filename,\
+                            string const datasetname, bool const append);
+template void write_h5_file(mac4 const* const data, string const filename,\
+                            string const datasetname, bool const append);
 template void print_multi_array(mad2 const* const data, bool const print_data);
 template void print_multi_array(mad3 const* const data, bool const print_data);
 template void print_multi_array(mad4 const* const data, bool const print_data);

@@ -19,20 +19,22 @@ typedef boost::multi_array<dcomplex,3> mac3;
 typedef boost::multi_array<dcomplex,4> mac4;
 
 //read
-mad2* const read_double_h5_file_2d(string const filename,string const datasetname);
-mad3* const read_double_h5_file_3d(string const filename,string const datasetname);
-mad4* const read_double_h5_file_4d(string const filename,string const datasetname);
+mad2* const read_double_h5_file_2d(string const filename, string const datasetname);
+mad3* const read_double_h5_file_3d(string const filename, string const datasetname);
+mad4* const read_double_h5_file_4d(string const filename, string const datasetname);
 
-mac2* const read_complex_h5_file_2d(string const filename,string const datasetname);
-mac3* const read_complex_h5_file_3d(string const filename,string const datasetname);
-mac4* const read_complex_h5_file_4d(string const filename,string const datasetname);
+mac2* const read_complex_h5_file_2d(string const filename, string const datasetname);
+mac3* const read_complex_h5_file_3d(string const filename, string const datasetname);
+mac4* const read_complex_h5_file_4d(string const filename, string const datasetname);
 
 //write
 template <unsigned long DIM>
-void write_h5_file(boost::multi_array<double,DIM> const* const data, string const filename, string const datasetname);
+void write_h5_file(boost::multi_array<double,DIM> const* const data, string const filename,\
+                   string const datasetname, bool const append = false);
 
 template <unsigned long DIM>
-void write_h5_file(boost::multi_array<dcomplex,DIM> const* const data, string const filename, string const datasetname);
+void write_h5_file(boost::multi_array<dcomplex,DIM> const* const data, string const filename,\
+                   string const datasetname, bool const append = false);
 
 //helping function
 template <unsigned long DIM>
