@@ -2,11 +2,19 @@
 #define FILEIO_H
 #include <glog/logging.h>
 #include "boost/multi_array.hpp"
+#include <boost/filesystem.hpp> //for generating temp files
 #include <complex>
 #include <iostream>
 #include <H5Cpp.h>
 #include <stdexcept>
 #include <sstream>
+
+#include <boost/random/linear_congruential.hpp>
+#include <boost/random/uniform_real.hpp>
+#include <boost/random/variate_generator.hpp>
+#include <boost/generator_iterator.hpp>
+#include "gtest/gtest.h"
+
 
 using namespace std;
 using namespace H5;
@@ -17,7 +25,6 @@ typedef boost::multi_array<double,4> mad4;
 typedef boost::multi_array<dcomplex,2> mac2;
 typedef boost::multi_array<dcomplex,3> mac3;
 typedef boost::multi_array<dcomplex,4> mac4;
-
 //read
 mad2* const read_double_h5_file_2d(string const filename, string const datasetname);
 mad3* const read_double_h5_file_3d(string const filename, string const datasetname);

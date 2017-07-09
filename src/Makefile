@@ -6,7 +6,7 @@ CFLAGS= -std=c++11 -O3 -I$(IDIR) -I/usr/include -Wall
 ODIR=obj
 LDIR =../lib
 
-LIBS= -lyaml-cpp -lglog -lboost_program_options -lhdf5_cpp -lhdf5
+LIBS= -lyaml-cpp -lglog -lgtest -lboost_program_options -lboost_system -lboost_filesystem -lhdf5_cpp -lhdf5
 
 _DEPS = ConfigParser.h Fields.h FieldTree.h fileio.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
@@ -14,10 +14,16 @@ DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 _OBJ = main.o ConfigParser.o Fields.o FieldTree.o fileio.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
+_OBJ_test = main_test.o ConfigParser.o Fields.o FieldTree.o fileio.o
+OBJ_test = $(patsubst %,$(ODIR)/%,$(_OBJ_test))
+
 $(ODIR)/%.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 main: $(OBJ)
+	$(CC) -o ../$@ $^ $(CFLAGS) $(LIBS)
+
+main_test: $(OBJ_test)
 	$(CC) -o ../$@ $^ $(CFLAGS) $(LIBS)
 
 .PHONY: clean

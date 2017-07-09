@@ -1,4 +1,5 @@
 *.yml
 src/obj/*.o
 main
+main_test
 *.h5

@@ -4,7 +4,7 @@
 #include "Fields.h"
 #include "FieldTree.h"
 #include "fileio.h"
-#include "boost/multi_array.hpp"
+//#include "boost/multi_array.hpp"
 using namespace std;
 
 int main(int argc, char* argv[])
@@ -15,12 +15,21 @@ int main(int argc, char* argv[])
 
   auto const* const data = read_complex_h5_file_4d("testc4.h5","test");
   print_multi_array(data);
-  write_h5_file(data,"testc4out.h5","test");
-  auto const* const data2 = read_complex_h5_file_4d("testc4out.h5","test");
+  auto const* const data2 = read_double_h5_file_3d("test3.h5","test");
   print_multi_array(data2);
-  cout << (*data==*data2) << endl;
+
+  write_h5_file(data,"testc4out.h5","test");
+  write_h5_file(data2,"testc4out.h5","test2",true);
+  auto const* const data_out = read_complex_h5_file_4d("testc4out.h5","test");
+  print_multi_array(data_out);
+  auto const* const data2_out = read_double_h5_file_3d("testc4out.h5","test2");
+  print_multi_array(data2_out);
+  cout << (*data==*data_out) << endl;
+  cout << (*data2==*data2_out) << endl;
   delete data;
   delete data2;
+  delete data_out;
+  delete data2_out;
 
   /////
   //  AbstractField AF;
