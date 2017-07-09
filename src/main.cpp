@@ -13,9 +13,14 @@ int main(int argc, char* argv[])
   ConfigParser configparser;
   configparser.parse_command_line(argc, argv);
 
-  auto const* const data = read_complex_h5_file_3d("testc3.h5","test");
+  auto const* const data = read_complex_h5_file_4d("testc4.h5","test");
   print_multi_array(data);
+  write_h5_file(data,"testc4out.h5","test");
+  auto const* const data2 = read_complex_h5_file_4d("testc4out.h5","test");
+  print_multi_array(data2);
+  cout << (*data==*data2) << endl;
   delete data;
+  delete data2;
 
   /////
   //  AbstractField AF;
