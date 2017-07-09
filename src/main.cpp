@@ -4,6 +4,7 @@
 #include "Fields.h"
 #include "FieldTree.h"
 #include "fileio.h"
+#include "boost/multi_array.hpp"
 using namespace std;
 
 int main(int argc, char* argv[])
@@ -12,7 +13,8 @@ int main(int argc, char* argv[])
   ConfigParser configparser;
   configparser.parse_command_line(argc, argv);
 
-  read_h5_file("test2.h5","test");
+  auto const* const data = read_double_h5_file_4d("test4.h5","test");
+  print_multi_array(data);
   /////
   //  AbstractField AF;
   //VectorField<3,dcomplex> FN;

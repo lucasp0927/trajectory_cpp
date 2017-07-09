@@ -81,6 +81,7 @@ template <int DIM, typename T>
  private:
   boost::multi_array<T,DIM+1>* field;
  public:
+  void test() const;
   VectorField();
 };
 #endif

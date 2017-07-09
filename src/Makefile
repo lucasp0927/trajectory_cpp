@@ -1,6 +1,7 @@
 IDIR =../include
 CC=g++
-CFLAGS= -std=c++11 -O3 -DNDEBUG -I$(IDIR) -I/usr/include -Wall
+#CFLAGS= -std=c++11 -O3 -DNDEBUG -I$(IDIR) -I/usr/include -Wall
+CFLAGS= -std=c++11 -O3 -I$(IDIR) -I/usr/include -Wall
 
 ODIR=obj
 LDIR =../lib

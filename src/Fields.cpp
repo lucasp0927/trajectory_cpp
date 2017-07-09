@@ -58,6 +58,10 @@ VectorField<DIM,T>::VectorField()
   field = nullptr;
 }
 
+template <int DIM,typename T>
+void VectorField<DIM,T>::test() const
+{
+}
 
 //explicitly instantiating
 template class AbstractField<2>;
