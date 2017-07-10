@@ -19,17 +19,20 @@
 using namespace std;
 using namespace H5;
 typedef complex<double> dcomplex;
+typedef boost::multi_array<double,1> mad1;
 typedef boost::multi_array<double,2> mad2;
 typedef boost::multi_array<double,3> mad3;
 typedef boost::multi_array<double,4> mad4;
+typedef boost::multi_array<dcomplex,1> mac1;
 typedef boost::multi_array<dcomplex,2> mac2;
 typedef boost::multi_array<dcomplex,3> mac3;
 typedef boost::multi_array<dcomplex,4> mac4;
 //read
+mad1* const read_double_h5_file_1d(string const filename, string const datasetname);
 mad2* const read_double_h5_file_2d(string const filename, string const datasetname);
 mad3* const read_double_h5_file_3d(string const filename, string const datasetname);
 mad4* const read_double_h5_file_4d(string const filename, string const datasetname);
-
+mac1* const read_complex_h5_file_1d(string const filename, string const datasetname);
 mac2* const read_complex_h5_file_2d(string const filename, string const datasetname);
 mac3* const read_complex_h5_file_3d(string const filename, string const datasetname);
 mac4* const read_complex_h5_file_4d(string const filename, string const datasetname);

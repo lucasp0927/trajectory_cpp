@@ -1,4 +1,54 @@
 #include "fileio.h"
+mad1* const read_double_h5_file_1d(string const filename,string const datasetname)
+{
+  const H5std_string FILE_NAME(filename);
+  const H5std_string DATASET_NAME(datasetname);
+  mad1* data;
+  try{
+    LOG(INFO) << "reading file: " << filename << endl;
+    LOG(INFO) << "        dataset: /" << datasetname << endl;
+    Exception::dontPrint();
+    H5File file( FILE_NAME, H5F_ACC_RDONLY );
+    DataSet dataset = file.openDataSet( DATASET_NAME );
+    DataSpace filespace = dataset.getSpace();
+    int rank = filespace.getSimpleExtentNdims();//number of dimension
+
+    hsize_t dims[1];    // dataset dimensions
+    rank = filespace.getSimpleExtentDims( dims );
+    if (rank != 1)
+      throw length_error("Incorrect dataset dimension!");
+    DataSpace mspace1(rank, dims);
+    double* const data_out = new double[dims[0]];
+    dataset.read( data_out, PredType::NATIVE_DOUBLE, mspace1, filespace );
+    data = new mad1(boost::extents[dims[0]]);
+    data->assign(data_out,data_out+dims[0]);
+    delete[] data_out;
+  }// end of try block
+  catch( FileIException error )
+    {
+      LOG(ERROR) << "Can't read file: " << filename <<", with dataset: " << datasetname;
+      exit(EXIT_FAILURE);
+    }
+  // catch failure caused by the DataSet operations
+  catch( DataSetIException error )
+    {
+      LOG(ERROR) << "Can't read file: " << filename <<", with dataset: " << datasetname;
+      exit(EXIT_FAILURE);
+    }
+  // catch failure caused by the DataSpace operations
+  catch( DataSpaceIException error )
+    {
+      error.printError();
+      exit(EXIT_FAILURE);
+    }
+  catch (length_error error)
+    {
+      LOG(ERROR) << error.what();
+      exit(EXIT_FAILURE);
+    }
+  return data;
+}
+
 mad2* const read_double_h5_file_2d(string const filename,string const datasetname)
 {
   const H5std_string FILE_NAME(filename);
@@ -144,6 +194,38 @@ mad4* const read_double_h5_file_4d(string const filename,string const datasetnam
       error.printError();
       exit(EXIT_FAILURE);
     }
+  catch (length_error error)
+    {
+      LOG(ERROR) << error.what();
+      exit(EXIT_FAILURE);
+    }
+  return data;
+}
+
+mac1* const read_complex_h5_file_1d(string const filename,string const datasetname)
+{
+  mac1* data;
+  const dcomplex ii(0.0,1.0);
+  try{
+    LOG(INFO) << "reading file: " << filename << endl;
+    LOG(INFO) << "        group: /" << datasetname << endl;
+    auto const* const real_data = read_double_h5_file_1d(filename,datasetname+"/real");
+    auto const* const imag_data = read_double_h5_file_1d(filename,datasetname+"/imag");
+    auto const* const real_shape = real_data->shape();
+    auto const* const imag_shape = imag_data->shape();
+    auto const* const shape = real_shape;
+    //check shapes are the same
+    for (int i = 0; i < 1; ++i)
+      {
+        if (real_shape[i] != imag_shape[i])
+          throw length_error("Real and imag parts have different shapes!");
+      }
+    data = new mac1(boost::extents[shape[0]]);
+    for (int i = 0; i < (int)shape[0]; i++)
+      (*data)[i] = (*real_data)[i] + ii*((*imag_data)[i]);
+    delete real_data;
+    delete imag_data;
+  }
   catch (length_error error)
     {
       LOG(ERROR) << error.what();
@@ -533,17 +615,43 @@ string const generate_tmp_filename(string const postfix = "")
     +"/"+(boost::filesystem::unique_path()).native()+postfix;
 }
 
-// TEST(ReadWriteTest, Complex4DTest)
-// {
-//   string const tmp_filename = generate_tmp_filename(".h5");
-//   auto const* const data = read_complex_h5_file_4d("test/testc4.h5","test");
-//   write_h5_file(data,tmp_filename,"test");
-//   auto const* const data_out = read_complex_h5_file_4d(tmp_filename,"test");
-//   ASSERT_EQ(*data,*data_out);
-//   delete data;
-//   delete data_out;
-//   boost::filesystem::remove(tmp_filename);
-// }
+TEST(ReadWriteTest, WriteReadRandDouble1D)
+{
+  string const tmp_filename = generate_tmp_filename(".h5");
+  int dim0 = rand()%10000+1;
+  LOG(INFO) << dim0 <<  endl;
+  mad1 data(boost::extents[dim0]);
+  typedef boost::minstd_rand base_generator_type;
+  base_generator_type generator(time(0));
+  boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
+  boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
+  for (int i = 0; i < dim0; ++i)
+    data[i] = (double) uni();
+  write_h5_file(&data,tmp_filename,"test");
+  auto const* const data_out = read_double_h5_file_1d(tmp_filename,"test");
+  ASSERT_EQ(data,*data_out);
+  delete data_out;
+  boost::filesystem::remove(tmp_filename);
+}
+
+TEST(ReadWriteTest, WriteReadRandComplex1D)
+{
+  string const tmp_filename = generate_tmp_filename(".h5");
+  int dim0 = rand()%10000+1;
+  LOG(INFO) << dim0 << endl;
+  mac1 data(boost::extents[dim0]);
+  typedef boost::minstd_rand base_generator_type;
+  base_generator_type generator(time(0));
+  boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
+  boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
+  for (int i = 0; i < dim0; ++i)
+    data[i] = dcomplex((double)uni(),(double)uni());
+  write_h5_file(&data,tmp_filename,"test");
+  auto const* const data_out = read_complex_h5_file_1d(tmp_filename,"test");
+  ASSERT_EQ(data,*data_out);
+  delete data_out;
+  boost::filesystem::remove(tmp_filename);
+}
 
 TEST(ReadWriteTest, WriteReadRandDouble2D)
 {
