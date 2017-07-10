@@ -590,9 +590,9 @@ TEST(ReadWriteTest, WriteReadRandComplex2D)
 TEST(ReadWriteTest, WriteReadRandDouble3D)
 {
   string const tmp_filename = generate_tmp_filename(".h5");
-  int dim0 = rand()%1000+1;
-  int dim1 = rand()%1000+1;
-  int dim2 = rand()%1000+1;
+  int dim0 = rand()%500+1;
+  int dim1 = rand()%500+1;
+  int dim2 = rand()%500+1;
   LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<endl;
   mad3 data(boost::extents[dim0][dim1][dim2]);
   typedef boost::minstd_rand base_generator_type;
@@ -613,9 +613,9 @@ TEST(ReadWriteTest, WriteReadRandDouble3D)
 TEST(ReadWriteTest, WriteReadRandComplex3D)
 {
   string const tmp_filename = generate_tmp_filename(".h5");
-  int dim0 = rand()%1000+1;
-  int dim1 = rand()%1000+1;
-  int dim2 = rand()%1000+1;
+  int dim0 = rand()%500+1;
+  int dim1 = rand()%500+1;
+  int dim2 = rand()%500+1;
   LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<endl;
   mac3 data(boost::extents[dim0][dim1][dim2]);
   typedef boost::minstd_rand base_generator_type;
@@ -680,5 +680,58 @@ TEST(ReadWriteTest, WriteReadRandComplex4D)
   auto const* const data_out = read_complex_h5_file_4d(tmp_filename,"test");
   ASSERT_EQ(data,*data_out);
   delete data_out;
+  boost::filesystem::remove(tmp_filename);
+}
+
+TEST(ReadWriteTest, AppendToFile)
+{
+  typedef boost::minstd_rand base_generator_type;
+  base_generator_type generator(time(0));
+  boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
+  boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
+  //write a complex 4d array
+  string const tmp_filename = generate_tmp_filename(".h5");
+  int dim0 = rand()%50+1;
+  int dim1 = rand()%50+1;
+  int dim2 = rand()%50+1;
+  int dim3 = rand()%50+1;
+  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 << " x " << dim3<<endl;
+  mac4 data1(boost::extents[dim0][dim1][dim2][dim3]);
+  for (int i = 0; i < dim0; ++i)
+    for (int j = 0; j < dim1; ++j)
+      for (int k = 0; k < dim2; ++k)
+        for (int l = 0; l < dim3; ++l)
+          data1[i][j][k][l] = dcomplex((double)uni(), (double)uni());
+  write_h5_file(&data1,tmp_filename,"test1");
+  //write a double 3d array
+  dim0 = rand()%500+1;
+  dim1 = rand()%500+1;
+  dim2 = rand()%500+1;
+  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<endl;
+  mad3 data2(boost::extents[dim0][dim1][dim2]);
+  for (int i = 0; i < dim0; ++i)
+    for (int j = 0; j < dim1; ++j)
+      for (int k = 0; k < dim2; ++k)
+        data2[i][j][k] = (double) uni();
+  write_h5_file(&data2,tmp_filename,"test2",true);
+  //write a complex 2d array
+  dim0 = rand()%1000+1;
+  dim1 = rand()%1000+1;
+  LOG(INFO) << dim0 << " x " << dim1 << endl;
+  mac2 data3(boost::extents[dim0][dim1]);
+  for (int i = 0; i < dim0; ++i)
+    for (int j = 0; j < dim1; ++j)
+      data3[i][j] = dcomplex((double)uni(),(double)uni());
+  write_h5_file(&data3,tmp_filename,"test3",true);
+  //read data
+  auto const* const data_out1 = read_complex_h5_file_4d(tmp_filename,"test1");
+  auto const* const data_out2 = read_double_h5_file_3d(tmp_filename,"test2");
+  auto const* const data_out3 = read_complex_h5_file_2d(tmp_filename,"test3");
+  ASSERT_EQ(data1,*data_out1);
+  ASSERT_EQ(data2,*data_out2);
+  ASSERT_EQ(data3,*data_out3);
+  delete data_out1;
+  delete data_out2;
+  delete data_out3;
   boost::filesystem::remove(tmp_filename);
 }
