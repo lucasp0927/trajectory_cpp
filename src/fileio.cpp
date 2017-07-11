@@ -59,129 +59,31 @@ boost::multi_array<double,DIM>* const read_double_h5_file(string const filename,
   return data;
 }
 
-mac1* const read_complex_h5_file_1d(string const filename,string const datasetname)
+template<unsigned long DIM>
+boost::multi_array<dcomplex,DIM>* const read_complex_h5_file(string const filename,\
+                                                          string const datasetname)
 {
-  mac1* data;
+  boost::multi_array<dcomplex,DIM>* data;
   const dcomplex ii(0.0,1.0);
   try{
     LOG(INFO) << "reading file: " << filename << endl;
     LOG(INFO) << "        group: /" << datasetname << endl;
-    auto const* const real_data = read_double_h5_file<1>(filename,datasetname+"/real");
-    auto const* const imag_data = read_double_h5_file<1>(filename,datasetname+"/imag");
+    auto const* const real_data = read_double_h5_file<DIM>(filename,datasetname+"/real");
+    auto const* const imag_data = read_double_h5_file<DIM>(filename,datasetname+"/imag");
     auto const* const real_shape = real_data->shape();
     auto const* const imag_shape = imag_data->shape();
-    auto const* const shape = real_shape;
+    //auto const* const shape = real_shape;
     //check shapes are the same
-    for (int i = 0; i < 1; ++i)
+    boost::array<hsize_t, DIM> shape;
+    for (unsigned int i = 0; i < DIM; ++i)
       {
+        shape[i] = real_shape[i];
         if (real_shape[i] != imag_shape[i])
           throw length_error("Real and imag parts have different shapes!");
       }
-    data = new mac1(boost::extents[shape[0]]);
-    for (int i = 0; i < (int)shape[0]; i++)
-      (*data)[i] = (*real_data)[i] + ii*((*imag_data)[i]);
-    delete real_data;
-    delete imag_data;
-  }
-  catch (length_error error)
-    {
-      LOG(ERROR) << error.what();
-      exit(EXIT_FAILURE);
-    }
-  return data;
-}
-
-mac2* const read_complex_h5_file_2d(string const filename,string const datasetname)
-{
-  mac2* data;
-  const dcomplex ii(0.0,1.0);
-  try{
-    LOG(INFO) << "reading file: " << filename << endl;
-    LOG(INFO) << "        group: /" << datasetname << endl;
-    auto const* const real_data = read_double_h5_file<2>(filename,datasetname+"/real");
-    auto const* const imag_data = read_double_h5_file<2>(filename,datasetname+"/imag");
-    auto const* const real_shape = real_data->shape();
-    auto const* const imag_shape = imag_data->shape();
-    auto const* const shape = real_shape;
-    //check shapes are the same
-    for (int i = 0; i < 2; ++i)
-      {
-        if (real_shape[i] != imag_shape[i])
-          throw length_error("Real and imag parts have different shapes!");
-      }
-    data = new mac2(boost::extents[shape[0]][shape[1]]);
-    for (int i = 0; i < (int)shape[0]; i++)
-      for (int j = 0; j < (int)shape[1]; j++)
-        (*data)[i][j] = (*real_data)[i][j] + ii*((*imag_data)[i][j]);
-    delete real_data;
-    delete imag_data;
-  }
-  catch (length_error error)
-    {
-      LOG(ERROR) << error.what();
-      exit(EXIT_FAILURE);
-    }
-  return data;
-}
-
-mac3* const read_complex_h5_file_3d(string const filename,string const datasetname)
-{
-  mac3* data;
-  const dcomplex ii(0.0,1.0);
-  try{
-    LOG(INFO) << "reading file: " << filename << endl;
-    LOG(INFO) << "        group: /" << datasetname << endl;
-    auto const* const real_data = read_double_h5_file<3>(filename,datasetname+"/real");
-    auto const* const imag_data = read_double_h5_file<3>(filename,datasetname+"/imag");
-    auto const* const real_shape = real_data->shape();
-    auto const* const imag_shape = imag_data->shape();
-    auto const* const shape = real_shape;
-    //check shapes are the same
-    for (int i = 0; i < 3; ++i)
-      {
-        if (real_shape[i] != imag_shape[i])
-          throw length_error("real and imag parts have different shapes!");
-      }
-    data = new mac3(boost::extents[shape[0]][shape[1]][shape[2]]);
-    for (int i = 0; i < (int)shape[0]; i++)
-      for (int j = 0; j < (int)shape[1]; j++)
-        for (int k = 0; k < (int)shape[2]; k++)
-          (*data)[i][j][k] = (*real_data)[i][j][k] + ii*((*imag_data)[i][j][k]);
-    delete real_data;
-    delete imag_data;
-  }
-  catch (length_error error)
-    {
-      LOG(ERROR) << error.what();
-      exit(EXIT_FAILURE);
-    }
-  return data;
-}
-
-mac4* const read_complex_h5_file_4d(string const filename,string const datasetname)
-{
-  mac4* data;
-  const dcomplex ii(0.0,1.0);
-  try{
-    LOG(INFO) << "reading file: " << filename << endl;
-    LOG(INFO) << "        group: /" << datasetname << endl;
-    auto const* const real_data = read_double_h5_file<4>(filename,datasetname+"/real");
-    auto const* const imag_data = read_double_h5_file<4>(filename,datasetname+"/imag");
-    auto const* const real_shape = real_data->shape();
-    auto const* const imag_shape = imag_data->shape();
-    auto const* const shape = real_shape;
-    //check shapes are the same
-    for (int i = 0; i < 4; ++i)
-      {
-        if (real_shape[i] != imag_shape[i])
-          throw length_error("real and imag parts have different shapes!");
-      }
-    data = new mac4(boost::extents[shape[0]][shape[1]][shape[2]][shape[3]]);
-    for (int i = 0; i < (int)shape[0]; i++)
-      for (int j = 0; j < (int)shape[1]; j++)
-        for (int k = 0; k < (int)shape[2]; k++)
-          for (int l = 0; l < (int)shape[3]; l++)
-            (*data)[i][j][k][l] = (*real_data)[i][j][k][l] + ii*((*imag_data)[i][j][k][l]);
+    data = new boost::multi_array<dcomplex,DIM>(shape);
+    for (unsigned int i = 0; i < data->num_elements(); i++ )
+      data->data()[i] = real_data->data()[i]+ii*imag_data->data()[i];
     delete real_data;
     delete imag_data;
   }
@@ -358,6 +260,26 @@ void write_h5_file(boost::multi_array<dcomplex,DIM> const* const data, string co
 }
 
 template <typename T>
+void print_multi_array(boost::multi_array<T,1> const* const data, bool const print_data)
+{
+  int const rank = data->num_dimensions();
+  auto const* const shape = data->shape();
+  LOG(INFO) << "========================"<< endl;
+  LOG(INFO) << "rank: "<< rank << endl;
+  LOG(INFO) << "dims: "<<shape[0] << endl;
+  if (print_data)
+    {
+      stringstream ss;
+      LOG(INFO) << "data:" << endl;
+      for (int i = 0;i<(int)shape[0];i++)
+          ss << (*data)[i] <<" ";
+      LOG(INFO) << ss.str() << endl;
+    }
+  LOG(INFO) << "========================"<< endl;
+}
+
+
+template <typename T>
 void print_multi_array(boost::multi_array<T,2> const* const data, bool const print_data)
 {
   int const rank = data->num_dimensions();
@@ -446,17 +368,40 @@ template mad3* const read_double_h5_file(string const filename,\
                                          string const datasetname);
 template mad4* const read_double_h5_file(string const filename,\
                                          string const datasetname);
+template mad5* const read_double_h5_file(string const filename,\
+                                         string const datasetname);
+template mac1* const read_complex_h5_file(string const filename,\
+                                         string const datasetname);
+template mac2* const read_complex_h5_file(string const filename,\
+                                         string const datasetname);
+template mac3* const read_complex_h5_file(string const filename,\
+                                         string const datasetname);
+template mac4* const read_complex_h5_file(string const filename,\
+                                         string const datasetname);
+template mac5* const read_complex_h5_file(string const filename,\
+                                         string const datasetname);
+
+template double const* const real_parts(mac1 const* const data);
 template double const* const real_parts(mac2 const* const data);
 template double const* const real_parts(mac3 const* const data);
 template double const* const real_parts(mac4 const* const data);
+template double const* const real_parts(mac5 const* const data);
+template double const* const imag_parts(mac1 const* const data);
 template double const* const imag_parts(mac2 const* const data);
 template double const* const imag_parts(mac3 const* const data);
 template double const* const imag_parts(mac4 const* const data);
+template double const* const imag_parts(mac5 const* const data);
+template void write_h5_file(mad1 const* const data, string const filename,\
+                            string const datasetname, bool const append);
 template void write_h5_file(mad2 const* const data, string const filename,\
                             string const datasetname, bool const append);
 template void write_h5_file(mad3 const* const data, string const filename,\
                             string const datasetname, bool const append);
 template void write_h5_file(mad4 const* const data, string const filename,\
+                            string const datasetname, bool const append);
+template void write_h5_file(mad5 const* const data, string const filename,\
+                            string const datasetname, bool const append);
+template void write_h5_file(mac1 const* const data, string const filename,\
                             string const datasetname, bool const append);
 template void write_h5_file(mac2 const* const data, string const filename,\
                             string const datasetname, bool const append);
@@ -464,247 +409,13 @@ template void write_h5_file(mac3 const* const data, string const filename,\
                             string const datasetname, bool const append);
 template void write_h5_file(mac4 const* const data, string const filename,\
                             string const datasetname, bool const append);
+template void write_h5_file(mac5 const* const data, string const filename,\
+                            string const datasetname, bool const append);
+template void print_multi_array(mad1 const* const data, bool const print_data);
 template void print_multi_array(mad2 const* const data, bool const print_data);
 template void print_multi_array(mad3 const* const data, bool const print_data);
 template void print_multi_array(mad4 const* const data, bool const print_data);
+template void print_multi_array(mac1 const* const data, bool const print_data);
 template void print_multi_array(mac2 const* const data, bool const print_data);
 template void print_multi_array(mac3 const* const data, bool const print_data);
 template void print_multi_array(mac4 const* const data, bool const print_data);
-
-/*
- * TEST
- */
-string const generate_tmp_filename(string const postfix = "")
-{
-  return  (boost::filesystem::temp_directory_path()).native() \
-    +"/"+(boost::filesystem::unique_path()).native()+postfix;
-}
-
-TEST(ReadWriteTest, WriteReadRandDouble1D)
-{
-  string const tmp_filename = generate_tmp_filename(".h5");
-  int dim0 = rand()%10000+1;
-  LOG(INFO) << dim0 <<  endl;
-  mad1 data(boost::extents[dim0]);
-  typedef boost::minstd_rand base_generator_type;
-  base_generator_type generator(time(0));
-  boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
-  boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
-  for (int i = 0; i < dim0; ++i)
-    data[i] = (double) uni();
-  write_h5_file(&data,tmp_filename,"test");
-  auto const* const data_out = read_double_h5_file<1>(tmp_filename,"test");
-  ASSERT_EQ(data,*data_out);
-  delete data_out;
-  boost::filesystem::remove(tmp_filename);
-}
-
-TEST(ReadWriteTest, WriteReadRandComplex1D)
-{
-  string const tmp_filename = generate_tmp_filename(".h5");
-  int dim0 = rand()%10000+1;
-  LOG(INFO) << dim0 << endl;
-  mac1 data(boost::extents[dim0]);
-  typedef boost::minstd_rand base_generator_type;
-  base_generator_type generator(time(0));
-  boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
-  boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
-  for (int i = 0; i < dim0; ++i)
-    data[i] = dcomplex((double)uni(),(double)uni());
-  write_h5_file(&data,tmp_filename,"test");
-  auto const* const data_out = read_complex_h5_file_1d(tmp_filename,"test");
-  ASSERT_EQ(data,*data_out);
-  delete data_out;
-  boost::filesystem::remove(tmp_filename);
-}
-
-TEST(ReadWriteTest, WriteReadRandDouble2D)
-{
-  string const tmp_filename = generate_tmp_filename(".h5");
-  int dim0 = rand()%1000+1;
-  int dim1 = rand()%1000+1;
-  LOG(INFO) << dim0 << " x " << dim1 << endl;
-  mad2 data(boost::extents[dim0][dim1]);
-  typedef boost::minstd_rand base_generator_type;
-  base_generator_type generator(time(0));
-  boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
-  boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
-  for (int i = 0; i < dim0; ++i)
-    for (int j = 0; j < dim1; ++j)
-      data[i][j] = (double) uni();
-  write_h5_file(&data,tmp_filename,"test");
-  auto const* const data_out = read_double_h5_file<2>(tmp_filename,"test");
-  ASSERT_EQ(data,*data_out);
-  delete data_out;
-  boost::filesystem::remove(tmp_filename);
-}
-
-TEST(ReadWriteTest, WriteReadRandComplex2D)
-{
-  string const tmp_filename = generate_tmp_filename(".h5");
-  int dim0 = rand()%1000+1;
-  int dim1 = rand()%1000+1;
-  LOG(INFO) << dim0 << " x " << dim1 << endl;
-  mac2 data(boost::extents[dim0][dim1]);
-  typedef boost::minstd_rand base_generator_type;
-  base_generator_type generator(time(0));
-  boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
-  boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
-  for (int i = 0; i < dim0; ++i)
-    for (int j = 0; j < dim1; ++j)
-      data[i][j] = dcomplex((double)uni(),(double)uni());
-  write_h5_file(&data,tmp_filename,"test");
-  auto const* const data_out = read_complex_h5_file_2d(tmp_filename,"test");
-  ASSERT_EQ(data,*data_out);
-  delete data_out;
-  boost::filesystem::remove(tmp_filename);
-}
-
-TEST(ReadWriteTest, WriteReadRandDouble3D)
-{
-  string const tmp_filename = generate_tmp_filename(".h5");
-  int dim0 = rand()%500+1;
-  int dim1 = rand()%500+1;
-  int dim2 = rand()%500+1;
-  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<endl;
-  mad3 data(boost::extents[dim0][dim1][dim2]);
-  typedef boost::minstd_rand base_generator_type;
-  base_generator_type generator(time(0));
-  boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
-  boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
-  for (int i = 0; i < dim0; ++i)
-    for (int j = 0; j < dim1; ++j)
-      for (int k = 0; k < dim2; ++k)
-        data[i][j][k] = (double) uni();
-  write_h5_file(&data,tmp_filename,"test");
-  auto const* const data_out = read_double_h5_file<3>(tmp_filename,"test");
-  ASSERT_EQ(data,*data_out);
-  delete data_out;
-  boost::filesystem::remove(tmp_filename);
-}
-
-TEST(ReadWriteTest, WriteReadRandComplex3D)
-{
-  string const tmp_filename = generate_tmp_filename(".h5");
-  int dim0 = rand()%500+1;
-  int dim1 = rand()%500+1;
-  int dim2 = rand()%500+1;
-  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<endl;
-  mac3 data(boost::extents[dim0][dim1][dim2]);
-  typedef boost::minstd_rand base_generator_type;
-  base_generator_type generator(time(0));
-  boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
-  boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
-  for (int i = 0; i < dim0; ++i)
-    for (int j = 0; j < dim1; ++j)
-      for (int k = 0; k < dim2; ++k)
-        data[i][j][k] = dcomplex((double)uni(),(double)uni());
-  write_h5_file(&data,tmp_filename,"test");
-  auto const* const data_out = read_complex_h5_file_3d(tmp_filename,"test");
-  ASSERT_EQ(data,*data_out);
-  delete data_out;
-  boost::filesystem::remove(tmp_filename);
-}
-
-TEST(ReadWriteTest, WriteReadRandDouble4D)
-{
-  string const tmp_filename = generate_tmp_filename(".h5");
-  int dim0 = rand()%100+1;
-  int dim1 = rand()%100+1;
-  int dim2 = rand()%100+1;
-  int dim3 = rand()%100+1;
-  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 << " x " << dim3<<endl;
-  mad4 data(boost::extents[dim0][dim1][dim2][dim3]);
-  typedef boost::minstd_rand base_generator_type;
-  base_generator_type generator(time(0));
-  boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
-  boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
-  for (int i = 0; i < dim0; ++i)
-    for (int j = 0; j < dim1; ++j)
-      for (int k = 0; k < dim2; ++k)
-        for (int l = 0; l < dim3; ++l)
-          data[i][j][k][l] = (double) uni();
-  write_h5_file(&data,tmp_filename,"test");
-  auto const* const data_out = read_double_h5_file<4>(tmp_filename,"test");
-  ASSERT_EQ(data,*data_out);
-  delete data_out;
-  boost::filesystem::remove(tmp_filename);
-}
-
-TEST(ReadWriteTest, WriteReadRandComplex4D)
-{
-  string const tmp_filename = generate_tmp_filename(".h5");
-  int dim0 = rand()%100+1;
-  int dim1 = rand()%100+1;
-  int dim2 = rand()%100+1;
-  int dim3 = rand()%100+1;
-  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 << " x " << dim3<<endl;
-  mac4 data(boost::extents[dim0][dim1][dim2][dim3]);
-  typedef boost::minstd_rand base_generator_type;
-  base_generator_type generator(time(0));
-  boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
-  boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
-  for (int i = 0; i < dim0; ++i)
-    for (int j = 0; j < dim1; ++j)
-      for (int k = 0; k < dim2; ++k)
-        for (int l = 0; l < dim3; ++l)
-          data[i][j][k][l] = dcomplex((double)uni(), (double)uni());
-  write_h5_file(&data,tmp_filename,"test");
-  auto const* const data_out = read_complex_h5_file_4d(tmp_filename,"test");
-  ASSERT_EQ(data,*data_out);
-  delete data_out;
-  boost::filesystem::remove(tmp_filename);
-}
-
-TEST(ReadWriteTest, AppendToFile)
-{
-  typedef boost::minstd_rand base_generator_type;
-  base_generator_type generator(time(0));
-  boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
-  boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
-  //write a complex 4d array
-  string const tmp_filename = generate_tmp_filename(".h5");
-  int dim0 = rand()%50+1;
-  int dim1 = rand()%50+1;
-  int dim2 = rand()%50+1;
-  int dim3 = rand()%50+1;
-  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 << " x " << dim3<<endl;
-  mac4 data1(boost::extents[dim0][dim1][dim2][dim3]);
-  for (int i = 0; i < dim0; ++i)
-    for (int j = 0; j < dim1; ++j)
-      for (int k = 0; k < dim2; ++k)
-        for (int l = 0; l < dim3; ++l)
-          data1[i][j][k][l] = dcomplex((double)uni(), (double)uni());
-  write_h5_file(&data1,tmp_filename,"test1");
-  //write a double 3d array
-  dim0 = rand()%500+1;
-  dim1 = rand()%500+1;
-  dim2 = rand()%500+1;
-  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<endl;
-  mad3 data2(boost::extents[dim0][dim1][dim2]);
-  for (int i = 0; i < dim0; ++i)
-    for (int j = 0; j < dim1; ++j)
-      for (int k = 0; k < dim2; ++k)
-        data2[i][j][k] = (double) uni();
-  write_h5_file(&data2,tmp_filename,"test2",true);
-  //write a complex 2d array
-  dim0 = rand()%1000+1;
-  dim1 = rand()%1000+1;
-  LOG(INFO) << dim0 << " x " << dim1 << endl;
-  mac2 data3(boost::extents[dim0][dim1]);
-  for (int i = 0; i < dim0; ++i)
-    for (int j = 0; j < dim1; ++j)
-      data3[i][j] = dcomplex((double)uni(),(double)uni());
-  write_h5_file(&data3,tmp_filename,"test3",true);
-  //read data
-  auto const* const data_out1 = read_complex_h5_file_4d(tmp_filename,"test1");
-  auto const* const data_out2 = read_double_h5_file<3>(tmp_filename,"test2");
-  auto const* const data_out3 = read_complex_h5_file_2d(tmp_filename,"test3");
-  ASSERT_EQ(data1,*data_out1);
-  ASSERT_EQ(data2,*data_out2);
-  ASSERT_EQ(data3,*data_out3);
-  delete data_out1;
-  delete data_out2;
-  delete data_out3;
-  boost::filesystem::remove(tmp_filename);
-}
