@@ -1,5 +1,6 @@
 #include "fileio.h"
-string const generate_tmp_filename(string const postfix = "")
+using namespace fileio;
+std::string const generate_tmp_filename(std::string const postfix = "")
 {
   return  (boost::filesystem::temp_directory_path()).native() \
     +"/"+(boost::filesystem::unique_path()).native()+postfix;
@@ -7,9 +8,9 @@ string const generate_tmp_filename(string const postfix = "")
 
 TEST(ReadWriteTest, WriteReadRandDouble1D)
 {
-  string const tmp_filename = generate_tmp_filename(".h5");
+  std::string const tmp_filename = generate_tmp_filename(".h5");
   int dim0 = rand()%10000+1;
-  LOG(INFO) << dim0 <<  endl;
+  LOG(INFO) << dim0 <<  std::endl;
   mad1 data(boost::extents[dim0]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
@@ -26,9 +27,9 @@ TEST(ReadWriteTest, WriteReadRandDouble1D)
 
 TEST(ReadWriteTest, WriteReadRandComplex1D)
 {
-  string const tmp_filename = generate_tmp_filename(".h5");
+  std::string const tmp_filename = generate_tmp_filename(".h5");
   int dim0 = rand()%10000+1;
-  LOG(INFO) << dim0 << endl;
+  LOG(INFO) << dim0 << std::endl;
   mac1 data(boost::extents[dim0]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
@@ -45,10 +46,10 @@ TEST(ReadWriteTest, WriteReadRandComplex1D)
 
 TEST(ReadWriteTest, WriteReadRandDouble2D)
 {
-  string const tmp_filename = generate_tmp_filename(".h5");
+  std::string const tmp_filename = generate_tmp_filename(".h5");
   int dim0 = rand()%1000+1;
   int dim1 = rand()%1000+1;
-  LOG(INFO) << dim0 << " x " << dim1 << endl;
+  LOG(INFO) << dim0 << " x " << dim1 << std::endl;
   mad2 data(boost::extents[dim0][dim1]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
@@ -66,10 +67,10 @@ TEST(ReadWriteTest, WriteReadRandDouble2D)
 
 TEST(ReadWriteTest, WriteReadRandComplex2D)
 {
-  string const tmp_filename = generate_tmp_filename(".h5");
+  std::string const tmp_filename = generate_tmp_filename(".h5");
   int dim0 = rand()%1000+1;
   int dim1 = rand()%1000+1;
-  LOG(INFO) << dim0 << " x " << dim1 << endl;
+  LOG(INFO) << dim0 << " x " << dim1 << std::endl;
   mac2 data(boost::extents[dim0][dim1]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
@@ -87,11 +88,11 @@ TEST(ReadWriteTest, WriteReadRandComplex2D)
 
 TEST(ReadWriteTest, WriteReadRandDouble3D)
 {
-  string const tmp_filename = generate_tmp_filename(".h5");
+  std::string const tmp_filename = generate_tmp_filename(".h5");
   int dim0 = rand()%500+1;
   int dim1 = rand()%500+1;
   int dim2 = rand()%500+1;
-  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<endl;
+  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<std::endl;
   mad3 data(boost::extents[dim0][dim1][dim2]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
@@ -110,11 +111,11 @@ TEST(ReadWriteTest, WriteReadRandDouble3D)
 
 TEST(ReadWriteTest, WriteReadRandComplex3D)
 {
-  string const tmp_filename = generate_tmp_filename(".h5");
+  std::string const tmp_filename = generate_tmp_filename(".h5");
   int dim0 = rand()%500+1;
   int dim1 = rand()%500+1;
   int dim2 = rand()%500+1;
-  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<endl;
+  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<std::endl;
   mac3 data(boost::extents[dim0][dim1][dim2]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
@@ -133,12 +134,12 @@ TEST(ReadWriteTest, WriteReadRandComplex3D)
 
 TEST(ReadWriteTest, WriteReadRandDouble4D)
 {
-  string const tmp_filename = generate_tmp_filename(".h5");
+  std::string const tmp_filename = generate_tmp_filename(".h5");
   int dim0 = rand()%100+1;
   int dim1 = rand()%100+1;
   int dim2 = rand()%100+1;
   int dim3 = rand()%100+1;
-  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 << " x " << dim3<<endl;
+  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 << " x " << dim3<<std::endl;
   mad4 data(boost::extents[dim0][dim1][dim2][dim3]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
@@ -158,12 +159,12 @@ TEST(ReadWriteTest, WriteReadRandDouble4D)
 
 TEST(ReadWriteTest, WriteReadRandComplex4D)
 {
-  string const tmp_filename = generate_tmp_filename(".h5");
+  std::string const tmp_filename = generate_tmp_filename(".h5");
   int dim0 = rand()%100+1;
   int dim1 = rand()%100+1;
   int dim2 = rand()%100+1;
   int dim3 = rand()%100+1;
-  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 << " x " << dim3<<endl;
+  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 << " x " << dim3<<std::endl;
   mac4 data(boost::extents[dim0][dim1][dim2][dim3]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
@@ -183,14 +184,14 @@ TEST(ReadWriteTest, WriteReadRandComplex4D)
 
 TEST(ReadWriteTest, WriteReadRandDouble5D)
 {
-  string const tmp_filename = generate_tmp_filename(".h5");
+  std::string const tmp_filename = generate_tmp_filename(".h5");
   int dim0 = rand()%30+1;
   int dim1 = rand()%30+1;
   int dim2 = rand()%30+1;
   int dim3 = rand()%30+1;
   int dim4 = rand()%30+1;
   LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<\
-    " x " << dim3 << " x " << dim4 <<endl;
+    " x " << dim3 << " x " << dim4 <<std::endl;
   mad5 data(boost::extents[dim0][dim1][dim2][dim3][dim4]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
@@ -211,14 +212,14 @@ TEST(ReadWriteTest, WriteReadRandDouble5D)
 
 TEST(ReadWriteTest, WriteReadRandComplex5D)
 {
-  string const tmp_filename = generate_tmp_filename(".h5");
+  std::string const tmp_filename = generate_tmp_filename(".h5");
   int dim0 = rand()%30+1;
   int dim1 = rand()%30+1;
   int dim2 = rand()%30+1;
   int dim3 = rand()%30+1;
   int dim4 = rand()%30+1;
   LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<\
-    " x " << dim3 << " x " << dim4 <<endl;
+    " x " << dim3 << " x " << dim4 <<std::endl;
   mac5 data(boost::extents[dim0][dim1][dim2][dim3][dim4]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
@@ -244,12 +245,12 @@ TEST(ReadWriteTest, AppendToFile)
   boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
   boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
   //write a complex 4d array
-  string const tmp_filename = generate_tmp_filename(".h5");
+  std::string const tmp_filename = generate_tmp_filename(".h5");
   int dim0 = rand()%50+1;
   int dim1 = rand()%50+1;
   int dim2 = rand()%50+1;
   int dim3 = rand()%50+1;
-  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 << " x " << dim3<<endl;
+  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 << " x " << dim3<<std::endl;
   mac4 data1(boost::extents[dim0][dim1][dim2][dim3]);
   for (int i = 0; i < dim0; ++i)
     for (int j = 0; j < dim1; ++j)
@@ -261,7 +262,7 @@ TEST(ReadWriteTest, AppendToFile)
   dim0 = rand()%500+1;
   dim1 = rand()%500+1;
   dim2 = rand()%500+1;
-  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<endl;
+  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<std::endl;
   mad3 data2(boost::extents[dim0][dim1][dim2]);
   for (int i = 0; i < dim0; ++i)
     for (int j = 0; j < dim1; ++j)
@@ -271,7 +272,7 @@ TEST(ReadWriteTest, AppendToFile)
   //write a complex 2d array
   dim0 = rand()%1000+1;
   dim1 = rand()%1000+1;
-  LOG(INFO) << dim0 << " x " << dim1 << endl;
+  LOG(INFO) << dim0 << " x " << dim1 << std::endl;
   mac2 data3(boost::extents[dim0][dim1]);
   for (int i = 0; i < dim0; ++i)
     for (int j = 0; j < dim1; ++j)
@@ -292,11 +293,11 @@ TEST(ReadWriteTest, AppendToFile)
 
 TEST(MemoryTest, WriteReadRandComplex3D)
 {
-  string const tmp_filename = generate_tmp_filename(".h5");
+  std::string const tmp_filename = generate_tmp_filename(".h5");
   int dim0 = 1000;
   int dim1 = 500;
   int dim2 = 500;
-  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<endl;
+  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<std::endl;
   mac3 data(boost::extents[dim0][dim1][dim2]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
