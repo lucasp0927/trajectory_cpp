@@ -289,3 +289,26 @@ TEST(ReadWriteTest, AppendToFile)
   delete data_out3;
   boost::filesystem::remove(tmp_filename);
 }
+
+TEST(MemoryTest, WriteReadRandComplex3D)
+{
+  string const tmp_filename = generate_tmp_filename(".h5");
+  int dim0 = 1000;
+  int dim1 = 500;
+  int dim2 = 500;
+  LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<endl;
+  mac3 data(boost::extents[dim0][dim1][dim2]);
+  typedef boost::minstd_rand base_generator_type;
+  base_generator_type generator(time(0));
+  boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
+  boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
+  for (int i = 0; i < dim0; ++i)
+    for (int j = 0; j < dim1; ++j)
+      for (int k = 0; k < dim2; ++k)
+        data[i][j][k] = dcomplex((double)uni(),(double)uni());
+  write_h5_file(&data,tmp_filename,"test");
+  auto const* const data_out = read_complex_h5_file<3>(tmp_filename,"test");
+  ASSERT_EQ(data,*data_out);
+  delete data_out;
+  boost::filesystem::remove(tmp_filename);
+}
