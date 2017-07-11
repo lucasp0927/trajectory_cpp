@@ -1,4 +1,65 @@
 #include "fileio.h"
+template<unsigned long DIM>
+boost::multi_array<double,DIM>* const read_double_h5_file(string const filename,\
+                                                          string const datasetname)
+{
+  const H5std_string FILE_NAME(filename);
+  const H5std_string DATASET_NAME(datasetname);
+  boost::multi_array<double,DIM>* data;
+  try{
+    LOG(INFO) << "reading file: " << filename << endl;
+    LOG(INFO) << "        dataset: /" << datasetname << endl;
+    Exception::dontPrint();
+    H5File file( FILE_NAME, H5F_ACC_RDONLY );
+    DataSet dataset = file.openDataSet( DATASET_NAME );
+    DataSpace filespace = dataset.getSpace();
+    int rank = filespace.getSimpleExtentNdims();//number of dimension
+
+    hsize_t dims[DIM];    // dataset dimensions
+    rank = filespace.getSimpleExtentDims( dims );
+    if (rank != DIM)
+      throw length_error("Incorrect dataset dimension!");
+
+    hsize_t element_num = 1;
+    for (hsize_t x: dims)
+      element_num *= x;
+    //read data from h5 file
+    DataSpace mspace1(rank, dims);
+    double* const data_out = new double[element_num];
+    dataset.read( data_out, PredType::NATIVE_DOUBLE, mspace1, filespace );
+    //construct multi_array and copy data.
+    boost::array<hsize_t, DIM> shape;
+    copy(begin(dims), end(dims), begin(shape));
+    data = new boost::multi_array<double,DIM>(shape);
+    data->assign(data_out,data_out+element_num);
+    delete[] data_out;
+  }// end of try block
+  catch( FileIException error )
+    {
+      LOG(ERROR) << "Can't read file: " << filename <<", with dataset: " << datasetname;
+      exit(EXIT_FAILURE);
+    }
+  // catch failure caused by the DataSet operations
+  catch( DataSetIException error )
+    {
+      LOG(ERROR) << "Can't read file: " << filename <<", with dataset: " << datasetname;
+      exit(EXIT_FAILURE);
+    }
+  // catch failure caused by the DataSpace operations
+  catch( DataSpaceIException error )
+    {
+      error.printError();
+      exit(EXIT_FAILURE);
+    }
+  catch (length_error error)
+    {
+      LOG(ERROR) << error.what();
+      exit(EXIT_FAILURE);
+    }
+  return data;
+}
+
+
 mad1* const read_double_h5_file_1d(string const filename,string const datasetname)
 {
   const H5std_string FILE_NAME(filename);
@@ -581,6 +642,14 @@ void print_multi_array(boost::multi_array<T,4> const* const data, bool const pri
   LOG(INFO) << "========================"<< endl;
 }
 //explicitly instantiating
+template mad1* const read_double_h5_file(string const filename,\
+                                         string const datasetname);
+template mad2* const read_double_h5_file(string const filename,\
+                                         string const datasetname);
+template mad3* const read_double_h5_file(string const filename,\
+                                         string const datasetname);
+template mad4* const read_double_h5_file(string const filename,\
+                                         string const datasetname);
 template double const* const real_parts(mac2 const* const data);
 template double const* const real_parts(mac3 const* const data);
 template double const* const real_parts(mac4 const* const data);
@@ -628,7 +697,7 @@ TEST(ReadWriteTest, WriteReadRandDouble1D)
   for (int i = 0; i < dim0; ++i)
     data[i] = (double) uni();
   write_h5_file(&data,tmp_filename,"test");
-  auto const* const data_out = read_double_h5_file_1d(tmp_filename,"test");
+  auto const* const data_out = read_double_h5_file<1>(tmp_filename,"test");
   ASSERT_EQ(data,*data_out);
   delete data_out;
   boost::filesystem::remove(tmp_filename);
@@ -668,7 +737,7 @@ TEST(ReadWriteTest, WriteReadRandDouble2D)
     for (int j = 0; j < dim1; ++j)
       data[i][j] = (double) uni();
   write_h5_file(&data,tmp_filename,"test");
-  auto const* const data_out = read_double_h5_file_2d(tmp_filename,"test");
+  auto const* const data_out = read_double_h5_file<2>(tmp_filename,"test");
   ASSERT_EQ(data,*data_out);
   delete data_out;
   boost::filesystem::remove(tmp_filename);
@@ -712,7 +781,7 @@ TEST(ReadWriteTest, WriteReadRandDouble3D)
       for (int k = 0; k < dim2; ++k)
         data[i][j][k] = (double) uni();
   write_h5_file(&data,tmp_filename,"test");
-  auto const* const data_out = read_double_h5_file_3d(tmp_filename,"test");
+  auto const* const data_out = read_double_h5_file<3>(tmp_filename,"test");
   ASSERT_EQ(data,*data_out);
   delete data_out;
   boost::filesystem::remove(tmp_filename);
@@ -760,7 +829,7 @@ TEST(ReadWriteTest, WriteReadRandDouble4D)
         for (int l = 0; l < dim3; ++l)
           data[i][j][k][l] = (double) uni();
   write_h5_file(&data,tmp_filename,"test");
-  auto const* const data_out = read_double_h5_file_4d(tmp_filename,"test");
+  auto const* const data_out = read_double_h5_file<4>(tmp_filename,"test");
   ASSERT_EQ(data,*data_out);
   delete data_out;
   boost::filesystem::remove(tmp_filename);

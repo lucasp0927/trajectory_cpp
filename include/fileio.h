@@ -2,6 +2,7 @@
 #define FILEIO_H
 #include <glog/logging.h>
 #include "boost/multi_array.hpp"
+#include "boost/array.hpp"
 #include <boost/filesystem.hpp> //for generating temp files
 #include <complex>
 #include <iostream>
@@ -28,6 +29,10 @@ typedef boost::multi_array<dcomplex,2> mac2;
 typedef boost::multi_array<dcomplex,3> mac3;
 typedef boost::multi_array<dcomplex,4> mac4;
 //read
+template <unsigned long DIM>
+boost::multi_array<double,DIM>* const read_double_h5_file(string const filename,\
+                                                          string const datasetname);
+
 mad1* const read_double_h5_file_1d(string const filename, string const datasetname);
 mad2* const read_double_h5_file_2d(string const filename, string const datasetname);
 mad3* const read_double_h5_file_3d(string const filename, string const datasetname);
