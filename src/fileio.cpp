@@ -59,210 +59,6 @@ boost::multi_array<double,DIM>* const read_double_h5_file(string const filename,
   return data;
 }
 
-
-mad1* const read_double_h5_file_1d(string const filename,string const datasetname)
-{
-  const H5std_string FILE_NAME(filename);
-  const H5std_string DATASET_NAME(datasetname);
-  mad1* data;
-  try{
-    LOG(INFO) << "reading file: " << filename << endl;
-    LOG(INFO) << "        dataset: /" << datasetname << endl;
-    Exception::dontPrint();
-    H5File file( FILE_NAME, H5F_ACC_RDONLY );
-    DataSet dataset = file.openDataSet( DATASET_NAME );
-    DataSpace filespace = dataset.getSpace();
-    int rank = filespace.getSimpleExtentNdims();//number of dimension
-
-    hsize_t dims[1];    // dataset dimensions
-    rank = filespace.getSimpleExtentDims( dims );
-    if (rank != 1)
-      throw length_error("Incorrect dataset dimension!");
-    DataSpace mspace1(rank, dims);
-    double* const data_out = new double[dims[0]];
-    dataset.read( data_out, PredType::NATIVE_DOUBLE, mspace1, filespace );
-    data = new mad1(boost::extents[dims[0]]);
-    data->assign(data_out,data_out+dims[0]);
-    delete[] data_out;
-  }// end of try block
-  catch( FileIException error )
-    {
-      LOG(ERROR) << "Can't read file: " << filename <<", with dataset: " << datasetname;
-      exit(EXIT_FAILURE);
-    }
-  // catch failure caused by the DataSet operations
-  catch( DataSetIException error )
-    {
-      LOG(ERROR) << "Can't read file: " << filename <<", with dataset: " << datasetname;
-      exit(EXIT_FAILURE);
-    }
-  // catch failure caused by the DataSpace operations
-  catch( DataSpaceIException error )
-    {
-      error.printError();
-      exit(EXIT_FAILURE);
-    }
-  catch (length_error error)
-    {
-      LOG(ERROR) << error.what();
-      exit(EXIT_FAILURE);
-    }
-  return data;
-}
-
-mad2* const read_double_h5_file_2d(string const filename,string const datasetname)
-{
-  const H5std_string FILE_NAME(filename);
-  const H5std_string DATASET_NAME(datasetname);
-  mad2* data;
-  try{
-    LOG(INFO) << "reading file: " << filename << endl;
-    LOG(INFO) << "        dataset: /" << datasetname << endl;
-    Exception::dontPrint();
-    H5File file( FILE_NAME, H5F_ACC_RDONLY );
-    DataSet dataset = file.openDataSet( DATASET_NAME );
-    DataSpace filespace = dataset.getSpace();
-    int rank = filespace.getSimpleExtentNdims();//number of dimension
-
-    hsize_t dims[2];    // dataset dimensions
-    rank = filespace.getSimpleExtentDims( dims );
-    if (rank != 2)
-      throw length_error("Incorrect dataset dimension!");
-    DataSpace mspace1(rank, dims);
-    double* const data_out = new double[dims[0]*dims[1]];
-    dataset.read( data_out, PredType::NATIVE_DOUBLE, mspace1, filespace );
-    data = new mad2(boost::extents[dims[0]][dims[1]]);
-    // for (int i = 0; i < (int)dims[0]; i++)
-    //     for (int j = 0; j < (int)dims[1]; j++)
-    //         (*data)[i][j] = data_out[i*dims[1]+j];
-    data->assign(data_out,data_out+dims[0]*dims[1]);
-    delete[] data_out;
-  }// end of try block
-  catch( FileIException error )
-    {
-      LOG(ERROR) << "Can't read file: " << filename <<", with dataset: " << datasetname;
-      exit(EXIT_FAILURE);
-    }
-  // catch failure caused by the DataSet operations
-  catch( DataSetIException error )
-    {
-      LOG(ERROR) << "Can't read file: " << filename <<", with dataset: " << datasetname;
-      exit(EXIT_FAILURE);
-    }
-  // catch failure caused by the DataSpace operations
-  catch( DataSpaceIException error )
-    {
-      error.printError();
-      exit(EXIT_FAILURE);
-    }
-  catch (length_error error)
-    {
-      LOG(ERROR) << error.what();
-      exit(EXIT_FAILURE);
-    }
-  return data;
-}
-
-mad3* const read_double_h5_file_3d(string const filename,string const datasetname)
-{
-  const H5std_string FILE_NAME(filename);
-  const H5std_string DATASET_NAME(datasetname);
-  mad3* data;
-  try{
-    LOG(INFO) << "reading file: " << filename << endl;
-    LOG(INFO) << "        dataset: /" << datasetname << endl;
-    Exception::dontPrint();
-    H5File file( FILE_NAME, H5F_ACC_RDONLY );
-    DataSet dataset = file.openDataSet( DATASET_NAME );
-    DataSpace filespace = dataset.getSpace();
-    int rank = filespace.getSimpleExtentNdims();//number of dimension
-
-    hsize_t dims[3];    // dataset dimensions
-    rank = filespace.getSimpleExtentDims( dims );
-    if (rank != 3)
-      throw length_error("Incorrect dataset dimension!");
-    DataSpace mspace1(rank, dims);
-    double* const data_out = new double[dims[0]*dims[1]*dims[2]];
-    dataset.read( data_out, PredType::NATIVE_DOUBLE, mspace1, filespace );
-    data = new mad3(boost::extents[dims[0]][dims[1]][dims[2]]);
-    data->assign(data_out,data_out+dims[0]*dims[1]*dims[2]);
-    delete[] data_out;
-  }// end of try block
-  catch( FileIException error )
-    {
-      LOG(ERROR) << "Can't read file: " << filename <<", with dataset: " << datasetname;
-      exit(EXIT_FAILURE);
-    }
-  // catch failure caused by the DataSet operations
-  catch( DataSetIException error )
-    {
-      LOG(ERROR) << "Can't read file: " << filename <<", with dataset: " << datasetname;
-      exit(EXIT_FAILURE);
-    }
-  // catch failure caused by the DataSpace operations
-  catch( DataSpaceIException error )
-    {
-      error.printError();
-      exit(EXIT_FAILURE);
-    }
-  catch (length_error error)
-    {
-      LOG(ERROR) << error.what();
-      exit(EXIT_FAILURE);
-    }
-  return data;
-}
-
-mad4* const read_double_h5_file_4d(string const filename,string const datasetname)
-{
-  const H5std_string FILE_NAME(filename);
-  const H5std_string DATASET_NAME(datasetname);
-  mad4* data;
-  try{
-    LOG(INFO) << "reading file: " << filename << endl;
-    LOG(INFO) << "        dataset: /" << datasetname << endl;
-    Exception::dontPrint();
-    H5File file( FILE_NAME, H5F_ACC_RDONLY );
-    DataSet dataset = file.openDataSet( DATASET_NAME );
-    DataSpace filespace = dataset.getSpace();
-    int rank = filespace.getSimpleExtentNdims();//number of dimension
-
-    hsize_t dims[4];    // dataset dimensions
-    rank = filespace.getSimpleExtentDims( dims );
-    if (rank != 4)
-      throw length_error("Incorrect dataset dimension!");
-    DataSpace mspace1(rank, dims);
-    double* const data_out = new double[dims[0]*dims[1]*dims[2]*dims[3]];
-    dataset.read( data_out, PredType::NATIVE_DOUBLE, mspace1, filespace );
-    data = new mad4(boost::extents[dims[0]][dims[1]][dims[2]][dims[3]]);
-    data->assign(data_out,data_out+dims[0]*dims[1]*dims[2]*dims[3]);
-    delete[] data_out;
-  }// end of try block
-  catch( FileIException error )
-    {
-      LOG(ERROR) << "Can't read file: " << filename <<", with dataset: " << datasetname;
-      exit(EXIT_FAILURE);
-    }
-  // catch failure caused by the DataSet operations
-  catch( DataSetIException error )
-    {
-      LOG(ERROR) << "Can't read file: " << filename <<", with dataset: " << datasetname;
-      exit(EXIT_FAILURE);
-    }
-  // catch failure caused by the DataSpace operations
-  catch( DataSpaceIException error )
-    {
-      error.printError();
-      exit(EXIT_FAILURE);
-    }
-  catch (length_error error)
-    {
-      LOG(ERROR) << error.what();
-      exit(EXIT_FAILURE);
-    }
-  return data;
-}
-
 mac1* const read_complex_h5_file_1d(string const filename,string const datasetname)
 {
   mac1* data;
@@ -270,8 +66,8 @@ mac1* const read_complex_h5_file_1d(string const filename,string const datasetna
   try{
     LOG(INFO) << "reading file: " << filename << endl;
     LOG(INFO) << "        group: /" << datasetname << endl;
-    auto const* const real_data = read_double_h5_file_1d(filename,datasetname+"/real");
-    auto const* const imag_data = read_double_h5_file_1d(filename,datasetname+"/imag");
+    auto const* const real_data = read_double_h5_file<1>(filename,datasetname+"/real");
+    auto const* const imag_data = read_double_h5_file<1>(filename,datasetname+"/imag");
     auto const* const real_shape = real_data->shape();
     auto const* const imag_shape = imag_data->shape();
     auto const* const shape = real_shape;
@@ -302,8 +98,8 @@ mac2* const read_complex_h5_file_2d(string const filename,string const datasetna
   try{
     LOG(INFO) << "reading file: " << filename << endl;
     LOG(INFO) << "        group: /" << datasetname << endl;
-    auto const* const real_data = read_double_h5_file_2d(filename,datasetname+"/real");
-    auto const* const imag_data = read_double_h5_file_2d(filename,datasetname+"/imag");
+    auto const* const real_data = read_double_h5_file<2>(filename,datasetname+"/real");
+    auto const* const imag_data = read_double_h5_file<2>(filename,datasetname+"/imag");
     auto const* const real_shape = real_data->shape();
     auto const* const imag_shape = imag_data->shape();
     auto const* const shape = real_shape;
@@ -335,8 +131,8 @@ mac3* const read_complex_h5_file_3d(string const filename,string const datasetna
   try{
     LOG(INFO) << "reading file: " << filename << endl;
     LOG(INFO) << "        group: /" << datasetname << endl;
-    auto const* const real_data = read_double_h5_file_3d(filename,datasetname+"/real");
-    auto const* const imag_data = read_double_h5_file_3d(filename,datasetname+"/imag");
+    auto const* const real_data = read_double_h5_file<3>(filename,datasetname+"/real");
+    auto const* const imag_data = read_double_h5_file<3>(filename,datasetname+"/imag");
     auto const* const real_shape = real_data->shape();
     auto const* const imag_shape = imag_data->shape();
     auto const* const shape = real_shape;
@@ -369,8 +165,8 @@ mac4* const read_complex_h5_file_4d(string const filename,string const datasetna
   try{
     LOG(INFO) << "reading file: " << filename << endl;
     LOG(INFO) << "        group: /" << datasetname << endl;
-    auto const* const real_data = read_double_h5_file_4d(filename,datasetname+"/real");
-    auto const* const imag_data = read_double_h5_file_4d(filename,datasetname+"/imag");
+    auto const* const real_data = read_double_h5_file<4>(filename,datasetname+"/real");
+    auto const* const imag_data = read_double_h5_file<4>(filename,datasetname+"/imag");
     auto const* const real_shape = real_data->shape();
     auto const* const imag_shape = imag_data->shape();
     auto const* const shape = real_shape;
@@ -902,7 +698,7 @@ TEST(ReadWriteTest, AppendToFile)
   write_h5_file(&data3,tmp_filename,"test3",true);
   //read data
   auto const* const data_out1 = read_complex_h5_file_4d(tmp_filename,"test1");
-  auto const* const data_out2 = read_double_h5_file_3d(tmp_filename,"test2");
+  auto const* const data_out2 = read_double_h5_file<3>(tmp_filename,"test2");
   auto const* const data_out3 = read_complex_h5_file_2d(tmp_filename,"test3");
   ASSERT_EQ(data1,*data_out1);
   ASSERT_EQ(data2,*data_out2);

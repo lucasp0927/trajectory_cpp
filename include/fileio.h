@@ -32,11 +32,6 @@ typedef boost::multi_array<dcomplex,4> mac4;
 template <unsigned long DIM>
 boost::multi_array<double,DIM>* const read_double_h5_file(string const filename,\
                                                           string const datasetname);
-
-mad1* const read_double_h5_file_1d(string const filename, string const datasetname);
-mad2* const read_double_h5_file_2d(string const filename, string const datasetname);
-mad3* const read_double_h5_file_3d(string const filename, string const datasetname);
-mad4* const read_double_h5_file_4d(string const filename, string const datasetname);
 mac1* const read_complex_h5_file_1d(string const filename, string const datasetname);
 mac2* const read_complex_h5_file_2d(string const filename, string const datasetname);
 mac3* const read_complex_h5_file_3d(string const filename, string const datasetname);
