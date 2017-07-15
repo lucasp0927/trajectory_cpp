@@ -2,7 +2,6 @@
 #include <glog/logging.h>
 #include "ConfigParser.h"
 #include "Fields.h"
-#include "FieldTree.h"
 #include "fileio.h"
 //#include "boost/multi_array.hpp"
 
