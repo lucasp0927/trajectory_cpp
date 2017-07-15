@@ -8,13 +8,13 @@ LDIR =../lib
 
 LIBS= -lyaml-cpp -lglog -lgtest -lboost_program_options -lboost_system -lboost_filesystem -lhdf5_cpp -lhdf5
 
-_DEPS = ConfigParser.h Fields.h FieldTree.h fileio.h
+_DEPS = ConfigParser.h Fields.h fileio.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o ConfigParser.o Fields.o FieldTree.o fileio.o
+_OBJ = main.o ConfigParser.o Fields.o fileio.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
-_OBJ_test = main_test.o ConfigParser.o Fields.o FieldTree.o fileio.o fileio_test.o
+_OBJ_test = main_test.o ConfigParser.o Fields.o fileio.o fileio_test.o
 OBJ_test = $(patsubst %,$(ODIR)/%,$(_OBJ_test))
 
 $(ODIR)/%.o: %.cpp $(DEPS)
