@@ -19,40 +19,35 @@ namespace fileio
 {
   using namespace H5;
   typedef std::complex<double> dcomplex;
-  typedef boost::multi_array<double,1> mad1;
-  typedef boost::multi_array<double,2> mad2;
-  typedef boost::multi_array<double,3> mad3;
-  typedef boost::multi_array<double,4> mad4;
-  typedef boost::multi_array<double,5> mad5;
-  typedef boost::multi_array<dcomplex,1> mac1;
-  typedef boost::multi_array<dcomplex,2> mac2;
-  typedef boost::multi_array<dcomplex,3> mac3;
-  typedef boost::multi_array<dcomplex,4> mac4;
-  typedef boost::multi_array<dcomplex,5> mac5;
+  template <unsigned long DIM>
+    using mad = boost::multi_array<double,DIM>;
+  template <unsigned long DIM>
+    using mac = boost::multi_array<dcomplex,DIM>;
+
   //read
   template <unsigned long DIM>
-    boost::multi_array<double,DIM>* const read_double_h5_file(std::string const filename,\
-                                                              std::string const datasetname);
+    mad<DIM>* const read_double_h5_file(std::string const filename,\
+                                        std::string const datasetname);
 
   template <unsigned long DIM>
-    boost::multi_array<dcomplex,DIM>* const read_complex_h5_file(std::string const filename,\
-                                                                 std::string const datasetname);
+    mac<DIM>* const read_complex_h5_file(std::string const filename,\
+                                         std::string const datasetname);
 
   //write
   template <unsigned long DIM>
-    void write_h5_file(boost::multi_array<double,DIM> const* const data, std::string const filename,\
+    void write_h5_file(mad<DIM> const* const data, std::string const filename,\
                        std::string const datasetname, bool const append = false);
 
   template <unsigned long DIM>
-    void write_h5_file(boost::multi_array<dcomplex,DIM> const* const data, std::string const filename,\
+    void write_h5_file(mac<DIM> const* const data, std::string const filename,\
                        std::string const datasetname, bool const append = false);
 
   //helping function
   template <unsigned long DIM>
-    double const* const real_parts(boost::multi_array<dcomplex,DIM> const* const data);
+    double const* const real_parts(mac<DIM> const* const data);
 
   template <unsigned long DIM>
-    double const* const imag_parts(boost::multi_array<dcomplex,DIM> const* const data);
+    double const* const imag_parts(mac<DIM> const* const data);
 
   //print
   template <typename T>

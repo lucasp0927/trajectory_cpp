@@ -11,7 +11,7 @@ TEST(ReadWriteTest, WriteReadRandDouble1D)
   std::string const tmp_filename = generate_tmp_filename(".h5");
   int dim0 = rand()%10000+1;
   LOG(INFO) << dim0 <<  std::endl;
-  mad1 data(boost::extents[dim0]);
+  mad<1> data(boost::extents[dim0]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
   boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
@@ -30,7 +30,7 @@ TEST(ReadWriteTest, WriteReadRandComplex1D)
   std::string const tmp_filename = generate_tmp_filename(".h5");
   int dim0 = rand()%10000+1;
   LOG(INFO) << dim0 << std::endl;
-  mac1 data(boost::extents[dim0]);
+  mac<1> data(boost::extents[dim0]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
   boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
@@ -50,7 +50,7 @@ TEST(ReadWriteTest, WriteReadRandDouble2D)
   int dim0 = rand()%1000+1;
   int dim1 = rand()%1000+1;
   LOG(INFO) << dim0 << " x " << dim1 << std::endl;
-  mad2 data(boost::extents[dim0][dim1]);
+  mad<2> data(boost::extents[dim0][dim1]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
   boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
@@ -71,7 +71,7 @@ TEST(ReadWriteTest, WriteReadRandComplex2D)
   int dim0 = rand()%1000+1;
   int dim1 = rand()%1000+1;
   LOG(INFO) << dim0 << " x " << dim1 << std::endl;
-  mac2 data(boost::extents[dim0][dim1]);
+  mac<2> data(boost::extents[dim0][dim1]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
   boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
@@ -93,7 +93,7 @@ TEST(ReadWriteTest, WriteReadRandDouble3D)
   int dim1 = rand()%500+1;
   int dim2 = rand()%500+1;
   LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<std::endl;
-  mad3 data(boost::extents[dim0][dim1][dim2]);
+  mad<3> data(boost::extents[dim0][dim1][dim2]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
   boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
@@ -116,7 +116,7 @@ TEST(ReadWriteTest, WriteReadRandComplex3D)
   int dim1 = rand()%500+1;
   int dim2 = rand()%500+1;
   LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<std::endl;
-  mac3 data(boost::extents[dim0][dim1][dim2]);
+  mac<3> data(boost::extents[dim0][dim1][dim2]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
   boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
@@ -140,7 +140,7 @@ TEST(ReadWriteTest, WriteReadRandDouble4D)
   int dim2 = rand()%100+1;
   int dim3 = rand()%100+1;
   LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 << " x " << dim3<<std::endl;
-  mad4 data(boost::extents[dim0][dim1][dim2][dim3]);
+  mad<4> data(boost::extents[dim0][dim1][dim2][dim3]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
   boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
@@ -165,7 +165,7 @@ TEST(ReadWriteTest, WriteReadRandComplex4D)
   int dim2 = rand()%100+1;
   int dim3 = rand()%100+1;
   LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 << " x " << dim3<<std::endl;
-  mac4 data(boost::extents[dim0][dim1][dim2][dim3]);
+  mac<4> data(boost::extents[dim0][dim1][dim2][dim3]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
   boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
@@ -192,7 +192,7 @@ TEST(ReadWriteTest, WriteReadRandDouble5D)
   int dim4 = rand()%30+1;
   LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<\
     " x " << dim3 << " x " << dim4 <<std::endl;
-  mad5 data(boost::extents[dim0][dim1][dim2][dim3][dim4]);
+  mad<5> data(boost::extents[dim0][dim1][dim2][dim3][dim4]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
   boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
@@ -220,7 +220,7 @@ TEST(ReadWriteTest, WriteReadRandComplex5D)
   int dim4 = rand()%30+1;
   LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<\
     " x " << dim3 << " x " << dim4 <<std::endl;
-  mac5 data(boost::extents[dim0][dim1][dim2][dim3][dim4]);
+  mac<5> data(boost::extents[dim0][dim1][dim2][dim3][dim4]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
   boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);
@@ -251,7 +251,7 @@ TEST(ReadWriteTest, AppendToFile)
   int dim2 = rand()%50+1;
   int dim3 = rand()%50+1;
   LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 << " x " << dim3<<std::endl;
-  mac4 data1(boost::extents[dim0][dim1][dim2][dim3]);
+  mac<4> data1(boost::extents[dim0][dim1][dim2][dim3]);
   for (int i = 0; i < dim0; ++i)
     for (int j = 0; j < dim1; ++j)
       for (int k = 0; k < dim2; ++k)
@@ -263,7 +263,7 @@ TEST(ReadWriteTest, AppendToFile)
   dim1 = rand()%500+1;
   dim2 = rand()%500+1;
   LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<std::endl;
-  mad3 data2(boost::extents[dim0][dim1][dim2]);
+  mad<3> data2(boost::extents[dim0][dim1][dim2]);
   for (int i = 0; i < dim0; ++i)
     for (int j = 0; j < dim1; ++j)
       for (int k = 0; k < dim2; ++k)
@@ -273,7 +273,7 @@ TEST(ReadWriteTest, AppendToFile)
   dim0 = rand()%1000+1;
   dim1 = rand()%1000+1;
   LOG(INFO) << dim0 << " x " << dim1 << std::endl;
-  mac2 data3(boost::extents[dim0][dim1]);
+  mac<2> data3(boost::extents[dim0][dim1]);
   for (int i = 0; i < dim0; ++i)
     for (int j = 0; j < dim1; ++j)
       data3[i][j] = dcomplex((double)uni(),(double)uni());
@@ -298,7 +298,7 @@ TEST(MemoryTest, WriteReadRandComplex3D)
   int dim1 = 500;
   int dim2 = 500;
   LOG(INFO) << dim0 << " x " << dim1 << " x " << dim2 <<std::endl;
-  mac3 data(boost::extents[dim0][dim1][dim2]);
+  mac<3> data(boost::extents[dim0][dim1][dim2]);
   typedef boost::minstd_rand base_generator_type;
   base_generator_type generator(time(0));
   boost::uniform_real<> uni_dist(-DBL_MAX,DBL_MAX);

@@ -2,12 +2,12 @@
 namespace fileio
 {
   template<unsigned long DIM>
-  boost::multi_array<double,DIM>* const read_double_h5_file(std::string const filename,\
+  mad<DIM>* const read_double_h5_file(std::string const filename,\
                                                             std::string const datasetname)
   {
     const H5std_string FILE_NAME(filename);
     const H5std_string DATASET_NAME(datasetname);
-    boost::multi_array<double,DIM>* data;
+    mad<DIM>* data;
     try{
       LOG(INFO) << "reading file: " << filename << std::endl;
       LOG(INFO) << "        dataset: /" << datasetname << std::endl;
@@ -32,7 +32,7 @@ namespace fileio
       //construct multi_array and copy data.
       boost::array<hsize_t, DIM> shape;
       std::copy(std::begin(dims), std::end(dims), std::begin(shape));
-      data = new boost::multi_array<double,DIM>(shape);
+      data = new mad<DIM>(shape);
       data->assign(data_out,data_out+element_num);
       delete[] data_out;
     }// end of try block
@@ -62,10 +62,10 @@ namespace fileio
   }
 
   template<unsigned long DIM>
-  boost::multi_array<dcomplex,DIM>* const read_complex_h5_file(std::string const filename,\
+  mac<DIM>* const read_complex_h5_file(std::string const filename,\
                                                                std::string const datasetname)
   {
-    boost::multi_array<dcomplex,DIM>* data;
+    mac<DIM>* data;
     const dcomplex ii(0.0,1.0);
     try{
       LOG(INFO) << "reading file: " << filename << std::endl;
@@ -83,7 +83,7 @@ namespace fileio
           if (real_shape[i] != imag_shape[i])
             throw std::length_error("Real and imag parts have different shapes!");
         }
-      data = new boost::multi_array<dcomplex,DIM>(shape);
+      data = new mac<DIM>(shape);
       for (unsigned int i = 0; i < data->num_elements(); i++ )
         data->data()[i] = real_data->data()[i]+ii*imag_data->data()[i];
       delete real_data;
@@ -98,7 +98,7 @@ namespace fileio
   }
 
   template <unsigned long DIM>
-  void write_h5_file(boost::multi_array<double,DIM> const* const data, std::string const filename,\
+  void write_h5_file(mad<DIM> const* const data, std::string const filename,\
                      std::string const datasetname, bool const append)
   {
     const H5std_string FILE_NAME(filename);
@@ -162,7 +162,7 @@ namespace fileio
   }
 
   template <unsigned long DIM>
-  double const* const real_parts(boost::multi_array<dcomplex,DIM> const* const data)
+  double const* const real_parts(mac<DIM> const* const data)
   {
     auto const arr_size = data->num_elements();
     auto const* const data_ptr = data->data();
@@ -173,7 +173,7 @@ namespace fileio
   }
 
   template <unsigned long DIM>
-  double const* const imag_parts(boost::multi_array<dcomplex,DIM> const* const data)
+  double const* const imag_parts(mac<DIM> const* const data)
   {
     auto const arr_size = data->num_elements();
     auto const* const data_ptr = data->data();
@@ -184,7 +184,7 @@ namespace fileio
   }
 
   template <unsigned long DIM>
-  void write_h5_file(boost::multi_array<dcomplex,DIM> const* const data, std::string const filename,\
+  void write_h5_file(mac<DIM> const* const data, std::string const filename,\
                      std::string const datasetname, bool const append)
   {
     const H5std_string FILE_NAME(filename);
@@ -362,63 +362,63 @@ namespace fileio
     LOG(INFO) << "========================"<< std::endl;
   }
   //explicitly instantiating
-  template mad1* const read_double_h5_file(std::string const filename,\
+  template mad<1>* const read_double_h5_file(std::string const filename, \
                                            std::string const datasetname);
-  template mad2* const read_double_h5_file(std::string const filename,\
+  template mad<2>* const read_double_h5_file(std::string const filename, \
                                            std::string const datasetname);
-  template mad3* const read_double_h5_file(std::string const filename,\
+  template mad<3>* const read_double_h5_file(std::string const filename, \
                                            std::string const datasetname);
-  template mad4* const read_double_h5_file(std::string const filename,\
+  template mad<4>* const read_double_h5_file(std::string const filename, \
                                            std::string const datasetname);
-  template mad5* const read_double_h5_file(std::string const filename,\
+  template mad<5>* const read_double_h5_file(std::string const filename, \
                                            std::string const datasetname);
-  template mac1* const read_complex_h5_file(std::string const filename,\
+  template mac<1>* const read_complex_h5_file(std::string const filename, \
                                             std::string const datasetname);
-  template mac2* const read_complex_h5_file(std::string const filename,\
+  template mac<2>* const read_complex_h5_file(std::string const filename, \
                                             std::string const datasetname);
-  template mac3* const read_complex_h5_file(std::string const filename,\
+  template mac<3>* const read_complex_h5_file(std::string const filename, \
                                             std::string const datasetname);
-  template mac4* const read_complex_h5_file(std::string const filename,\
+  template mac<4>* const read_complex_h5_file(std::string const filename, \
                                             std::string const datasetname);
-  template mac5* const read_complex_h5_file(std::string const filename,\
+  template mac<5>* const read_complex_h5_file(std::string const filename, \
                                             std::string const datasetname);
 
-  template double const* const real_parts(mac1 const* const data);
-  template double const* const real_parts(mac2 const* const data);
-  template double const* const real_parts(mac3 const* const data);
-  template double const* const real_parts(mac4 const* const data);
-  template double const* const real_parts(mac5 const* const data);
-  template double const* const imag_parts(mac1 const* const data);
-  template double const* const imag_parts(mac2 const* const data);
-  template double const* const imag_parts(mac3 const* const data);
-  template double const* const imag_parts(mac4 const* const data);
-  template double const* const imag_parts(mac5 const* const data);
-  template void write_h5_file(mad1 const* const data, std::string const filename,\
+  template double const* const real_parts(mac<1> const* const data);
+  template double const* const real_parts(mac<2> const* const data);
+  template double const* const real_parts(mac<3> const* const data);
+  template double const* const real_parts(mac<4> const* const data);
+  template double const* const real_parts(mac<5> const* const data);
+  template double const* const imag_parts(mac<1> const* const data);
+  template double const* const imag_parts(mac<2> const* const data);
+  template double const* const imag_parts(mac<3> const* const data);
+  template double const* const imag_parts(mac<4> const* const data);
+  template double const* const imag_parts(mac<5> const* const data);
+  template void write_h5_file(mad<1> const* const data, std::string const filename, \
                               std::string const datasetname, bool const append);
-  template void write_h5_file(mad2 const* const data, std::string const filename,\
+  template void write_h5_file(mad<2> const* const data, std::string const filename, \
                               std::string const datasetname, bool const append);
-  template void write_h5_file(mad3 const* const data, std::string const filename,\
+  template void write_h5_file(mad<3> const* const data, std::string const filename, \
                               std::string const datasetname, bool const append);
-  template void write_h5_file(mad4 const* const data, std::string const filename,\
+  template void write_h5_file(mad<4> const* const data, std::string const filename, \
                               std::string const datasetname, bool const append);
-  template void write_h5_file(mad5 const* const data, std::string const filename,\
+  template void write_h5_file(mad<5> const* const data, std::string const filename, \
                               std::string const datasetname, bool const append);
-  template void write_h5_file(mac1 const* const data, std::string const filename,\
+  template void write_h5_file(mac<1> const* const data, std::string const filename, \
                               std::string const datasetname, bool const append);
-  template void write_h5_file(mac2 const* const data, std::string const filename,\
+  template void write_h5_file(mac<2> const* const data, std::string const filename, \
                               std::string const datasetname, bool const append);
-  template void write_h5_file(mac3 const* const data, std::string const filename,\
+  template void write_h5_file(mac<3> const* const data, std::string const filename, \
                               std::string const datasetname, bool const append);
-  template void write_h5_file(mac4 const* const data, std::string const filename,\
+  template void write_h5_file(mac<4> const* const data, std::string const filename, \
                               std::string const datasetname, bool const append);
-  template void write_h5_file(mac5 const* const data, std::string const filename,\
+  template void write_h5_file(mac<5> const* const data, std::string const filename, \
                               std::string const datasetname, bool const append);
-  template void print_multi_array(mad1 const* const data, bool const print_data);
-  template void print_multi_array(mad2 const* const data, bool const print_data);
-  template void print_multi_array(mad3 const* const data, bool const print_data);
-  template void print_multi_array(mad4 const* const data, bool const print_data);
-  template void print_multi_array(mac1 const* const data, bool const print_data);
-  template void print_multi_array(mac2 const* const data, bool const print_data);
-  template void print_multi_array(mac3 const* const data, bool const print_data);
-  template void print_multi_array(mac4 const* const data, bool const print_data);
+  template void print_multi_array(mad<1> const* const data, bool const print_data);
+  template void print_multi_array(mad<2> const* const data, bool const print_data);
+  template void print_multi_array(mad<3> const* const data, bool const print_data);
+  template void print_multi_array(mad<4> const* const data, bool const print_data);
+  template void print_multi_array(mac<1> const* const data, bool const print_data);
+  template void print_multi_array(mac<2> const* const data, bool const print_data);
+  template void print_multi_array(mac<3> const* const data, bool const print_data);
+  template void print_multi_array(mac<4> const* const data, bool const print_data);
 }
