@@ -9,7 +9,7 @@ namespace physystem
 
   template <template <unsigned long> class atomtype, unsigned long DIM>
   NonInteractingPhySystem<atomtype, DIM>::NonInteractingPhySystem(ScalarFieldNode<DIM>* const f, \
-                                                        NonInteractingAtoms<atomtype,DIM>* const a): BasePhySystem<DIM>(f), atoms(a)
+                                          NonInteractingAtoms<atomtype,DIM>* const a): BasePhySystem<DIM>(f), atoms(a)
   {
     LOG(INFO) << "initializing NonInteractingPhySystem";
   }

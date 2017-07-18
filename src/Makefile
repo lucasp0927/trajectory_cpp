@@ -14,7 +14,7 @@ DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 _OBJ = main.o ConfigParser.o Fields.o fileio.o BasePhySystem.o Atoms.o Atom.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
-_OBJ_test = main_test.o ConfigParser.o Fields.o fileio.o fileio_test.o BasePhySystem.o Atoms.o Atom.o
+_OBJ_test = main_test.o ConfigParser.o Fields.o fileio.o fileio_test.o ConfigParser_test.o BasePhySystem.o Atoms.o Atom.o
 OBJ_test = $(patsubst %,$(ODIR)/%,$(_OBJ_test))
 
 $(ODIR)/%.o: %.cpp $(DEPS)
