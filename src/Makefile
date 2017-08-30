@@ -1,10 +1,11 @@
 IDIR =../include
 CC=g++
-CFLAGS= -std=c++11 -O3 -DNDEBUG -I$(IDIR) -I/usr/include -Wall
-#CFLAGS= -std=c++11 -O3 -I$(IDIR) -I/usr/include -Wall
+#CFLAGS= -std=c++11 -O3 -DNDEBUG -I$(IDIR) -I/usr/include -Wall
+CFLAGS= -std=c++11 -O3 -I$(IDIR) -I/usr/include -Wall
 
 ODIR=obj
 LDIR =../lib
+BDIR = ../build
 
 LIBS= -lyaml-cpp -lglog -lgtest -lboost_program_options -lboost_system -lboost_filesystem -lhdf5_cpp -lhdf5
 
@@ -21,10 +22,10 @@ $(ODIR)/%.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 main: $(OBJ)
-	$(CC) -o ../$@ $^ $(CFLAGS) $(LIBS)
+	$(CC) -o $(BDIR)/$@ $^ $(CFLAGS) $(LIBS)
 
 main_test: $(OBJ_test)
-	$(CC) -o ../$@ $^ $(CFLAGS) $(LIBS)
+	$(CC) -o $(BDIR)/$@ $^ $(CFLAGS) $(LIBS)
 
 .PHONY: clean
 

@@ -13,7 +13,7 @@ using namespace atoms;
 using namespace physystem;
 int main(int argc, char *argv[])
 {
-  ScalarFieldNode<2> sfn;
+  ScalarFieldNode<2> sfn("test", 0.0);
   NonInteractingAtoms<PointParticle,2> atoms(100);
   NonInteractingPhySystem<PointParticle,2> NIPS(&sfn,&atoms);
   std::srand(std::time(0));
