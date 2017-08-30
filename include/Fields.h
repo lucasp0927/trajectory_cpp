@@ -13,9 +13,13 @@ namespace fields
     class AbstractField
     {
     protected:
+      std::string const name;
+      double const freq;
     public:
-      AbstractField();
-      ~AbstractField() = default;
+      AbstractField(std::string const _name, double const _freq);
+      virtual ~AbstractField() = default;
+      virtual std::string get_name() const {return name;};
+      virtual double get_freq() const {return freq;};
     };
 
   template <unsigned long DIM>
@@ -23,8 +27,8 @@ namespace fields
     {
     protected:
     public:
-      FieldNode();
-      ~FieldNode() = default;
+      FieldNode(std::string const _name, double const _freq);
+      virtual ~FieldNode() = default;
     };
 
   template <unsigned long DIM>
@@ -32,8 +36,8 @@ namespace fields
     {
     protected:
     public:
-      AbstractScalarField();
-      ~AbstractScalarField() = default;
+      AbstractScalarField(std::string const _name, double const _freq);
+      virtual ~AbstractScalarField() = default;
     };
 
   template <unsigned long DIM>
@@ -41,8 +45,8 @@ namespace fields
     {
     protected:
     public:
-      AbstractVectorField();
-      ~AbstractVectorField() = default;
+      AbstractVectorField(std::string const _name, double const _freq);
+      virtual ~AbstractVectorField() = default;
     };
 
   template <unsigned long DIM>
@@ -51,8 +55,8 @@ namespace fields
   protected:
     AbstractField<DIM>** fields;
   public:
-    ScalarFieldNode();
-    ~ScalarFieldNode() = default;
+    ScalarFieldNode(std::string const _name, double const _freq);
+    virtual ~ScalarFieldNode(){std::cout<<"SFN Destructor."<<std::endl;};
   };
 
   template <unsigned long DIM>
@@ -61,8 +65,8 @@ namespace fields
   protected:
     AbstractVectorField<DIM>** fields;
   public:
-    VectorFieldNode();
-    ~VectorFieldNode() = default;
+    VectorFieldNode(std::string const _name, double const _freq);
+    virtual ~VectorFieldNode() = default;
   };
 
   template <unsigned long DIM, typename T>
@@ -71,8 +75,8 @@ namespace fields
   private:
     boost::multi_array<T,DIM>* field;
   public:
-    ScalarField();
-    ~ScalarField() = default;
+    ScalarField(std::string const _name, double const _freq);
+    virtual ~ScalarField() = default;
   };
 
 
@@ -82,8 +86,8 @@ namespace fields
   private:
     boost::multi_array<T,DIM+1>* field;
   public:
-    void test() const;
-    VectorField();
+    VectorField(std::string const _name, double const _freq);
+    virtual ~VectorField() = default;
   };
 }
 #endif

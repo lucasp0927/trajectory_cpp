@@ -1,5 +1,6 @@
 #ifndef ATOM_H
 #define ATOM_H
+#include <glog/logging.h>
 #include <complex>
 #include <array>
 namespace atom
@@ -9,7 +10,7 @@ namespace atom
     {
     public:
       Atom() = default;
-      ~Atom() = default;
+      virtual ~Atom() = default;
     protected:
       std::array<double,DIM> pos;
       std::array<double,DIM> vel;
@@ -21,7 +22,7 @@ namespace atom
     {
     public:
       PointParticle() = default;
-      ~PointParticle() = default;
+      virtual ~PointParticle()=default;
     };
 }
 #endif

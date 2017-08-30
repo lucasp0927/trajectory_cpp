@@ -14,7 +14,7 @@ namespace physystem
     {
     public:
       BasePhySystem(ScalarFieldNode<DIM>* const f);
-      ~BasePhySystem()=default;
+      virtual ~BasePhySystem()=default;
     protected:
       ScalarFieldNode<DIM>* const fieldroot;
     private:
@@ -26,7 +26,7 @@ namespace physystem
     {
     public:
       NonInteractingPhySystem(ScalarFieldNode<DIM>* const f,NonInteractingAtoms<atomtype, DIM>* const a);
-      ~NonInteractingPhySystem()=default;
+      virtual ~NonInteractingPhySystem()=default;
     protected:
       NonInteractingAtoms<atomtype, DIM>* const atoms;
     private:

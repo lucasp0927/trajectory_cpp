@@ -2,7 +2,7 @@
 namespace fields
 {
   template <unsigned long DIM>
-  AbstractField<DIM>::AbstractField()
+  AbstractField<DIM>::AbstractField(std::string const _name, double const _freq): name(_name), freq(_freq)
   {
     if (DIM == 2)
       LOG(INFO) << "init 2D AbstractField";
@@ -11,37 +11,39 @@ namespace fields
   }
 
   template <unsigned long DIM>
-  FieldNode<DIM>::FieldNode()
+  FieldNode<DIM>::FieldNode(std::string const _name, double const _freq): AbstractField<DIM>(_name, _freq)
   {
     LOG(INFO) << "init FieldNode ";
   }
 
   template <unsigned long DIM>
-  AbstractVectorField<DIM>::AbstractVectorField()
+  AbstractVectorField<DIM>::AbstractVectorField(std::string const _name, double const _freq): AbstractField<DIM>(_name, _freq)
   {
     LOG(INFO) << "init AbstractVectorField";
   }
 
   template <unsigned long DIM>
-  AbstractScalarField<DIM>::AbstractScalarField()
+  AbstractScalarField<DIM>::AbstractScalarField(std::string const _name, double const _freq): AbstractField<DIM>(_name, _freq)
   {
     LOG(INFO) << "init AbstractScalarField";
   }
 
   template <unsigned long DIM>
-  VectorFieldNode<DIM>::VectorFieldNode()
+  VectorFieldNode<DIM>::VectorFieldNode(std::string const _name, double const _freq):\
+    AbstractField<DIM>(_name, _freq),AbstractVectorField<DIM>(_name, _freq), FieldNode<DIM>(_name, _freq)
   {
     LOG(INFO) << "init VectorFieldNode";
   }
 
   template <unsigned long DIM>
-  ScalarFieldNode<DIM>::ScalarFieldNode()
+  ScalarFieldNode<DIM>::ScalarFieldNode(std::string const _name, double const _freq):\
+    AbstractField<DIM>(_name, _freq),AbstractScalarField<DIM>(_name, _freq), FieldNode<DIM>(_name, _freq)
   {
     LOG(INFO) << "init ScalarFieldNode";
   }
 
   template <unsigned long DIM,typename T>
-  ScalarField<DIM,T>::ScalarField()
+  ScalarField<DIM,T>::ScalarField(std::string const _name, double const _freq): AbstractField<DIM>(_name, _freq), AbstractScalarField<DIM>(_name, _freq)
   {
     if (DIM==2)
       LOG(INFO) << "init 2D Scalarfield";
@@ -51,18 +53,13 @@ namespace fields
   }
 
   template <unsigned long DIM,typename T>
-  VectorField<DIM,T>::VectorField()
+  VectorField<DIM,T>::VectorField(std::string const _name, double const _freq): AbstractField<DIM>(_name, _freq), AbstractVectorField<DIM>(_name, _freq)
   {
     if (DIM==2)
       LOG(INFO) << "init 2D Vectorfield";
     else if (DIM==3)
       LOG(INFO) << "init 3D Vectorfield";
     field = nullptr;
-  }
-
-  template <unsigned long DIM,typename T>
-  void VectorField<DIM,T>::test() const
-  {
   }
 
   //explicitly instantiating

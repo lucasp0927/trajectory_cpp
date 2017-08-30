@@ -1,12 +1,12 @@
 #ifndef ATOMS_H
 #define ATOMS_H
+#include <memory>
 #include <glog/logging.h>
 #include "Atom.h"
 #include <vector>
 namespace atoms
 {
   using namespace atom;
-
   template <unsigned long DIM>
     class Atoms
     {
@@ -26,7 +26,7 @@ namespace atoms
       NonInteractingAtoms(unsigned int const atom_number);
       ~NonInteractingAtoms()=default;
     protected:
-      std::vector<atomtype<DIM>>* atoms;
+      std::vector<std::shared_ptr<atomtype<DIM>>> atoms;
     private:
     };
 }
