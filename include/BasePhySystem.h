@@ -1,11 +1,12 @@
 #ifndef BASEPHYSYSTEM_H
 #define BASEPHYSYSTEM_H
 #include <glog/logging.h>
-#include "Fields.h"
+#include "FieldTree.h"
 #include "Atoms.h"
 #include "Atom.h"
 namespace physystem
 {
+  using namespace fieldtree;
   using namespace fields;
   using namespace atoms;
   using namespace atom;
@@ -13,10 +14,10 @@ namespace physystem
     class BasePhySystem
     {
     public:
-      BasePhySystem(ScalarFieldNode<DIM>* const f);
+      BasePhySystem(FieldTree<DIM>* const f);
       virtual ~BasePhySystem()=default;
     protected:
-      ScalarFieldNode<DIM>* const fieldroot;
+      FieldTree<DIM>* const fieldtree;
     private:
     };
 
@@ -25,7 +26,7 @@ namespace physystem
     class NonInteractingPhySystem: public BasePhySystem<DIM>
     {
     public:
-      NonInteractingPhySystem(ScalarFieldNode<DIM>* const f,NonInteractingAtoms<atomtype, DIM>* const a);
+      NonInteractingPhySystem(FieldTree<DIM>* const f,NonInteractingAtoms<atomtype, DIM>* const a);
       virtual ~NonInteractingPhySystem()=default;
     protected:
       NonInteractingAtoms<atomtype, DIM>* const atoms;

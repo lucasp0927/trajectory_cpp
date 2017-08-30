@@ -9,13 +9,13 @@ BDIR = ../build
 
 LIBS= -lyaml-cpp -lglog -lgtest -lboost_program_options -lboost_system -lboost_filesystem -lhdf5_cpp -lhdf5 -lpthread -lm
 
-_DEPS = ConfigParser.h Fields.h fileio.h BasePhySystem.h Atoms.h Atom.h
+_DEPS = ConfigParser.h Fields.h fileio.h BasePhySystem.h Atoms.h Atom.h FieldTree.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o ConfigParser.o Fields.o fileio.o BasePhySystem.o Atoms.o Atom.o
+_OBJ = main.o ConfigParser.o Fields.o fileio.o BasePhySystem.o Atoms.o Atom.o FieldTree.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
-_OBJ_test = main_test.o ConfigParser.o Fields.o fileio.o fileio_test.o ConfigParser_test.o BasePhySystem.o Atoms.o Atom.o
+_OBJ_test = main_test.o ConfigParser.o Fields.o fileio.o fileio_test.o ConfigParser_test.o BasePhySystem.o Atoms.o Atom.o FieldTree.o
 OBJ_test = $(patsubst %,$(ODIR)/%,$(_OBJ_test))
 
 $(ODIR)/%.o: %.cpp $(DEPS)
