@@ -9,6 +9,7 @@
 #include <H5Cpp.h>
 #include <stdexcept>
 #include <sstream>
+#include <cfloat> //DBL_MAX
 
 #include <boost/random/linear_congruential.hpp>
 #include <boost/random/uniform_real.hpp>
