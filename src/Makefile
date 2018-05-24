@@ -1,16 +1,26 @@
 IDIR =../include
-CC=g++
 #CFLAGS= -std=c++11 -O3 -DNDEBUG -I$(IDIR) -I/usr/include -Wall
 ODIR=obj
 LDIR =../lib
 BDIR = ../build
 
 UNAME_S := $(shell uname -s)
+OS := $(shell lsb_release -si)
 ifeq ($(UNAME_S),Linux)
+	CC=g++
+	CXX=g++
 	CFLAGS= -std=c++11 -O3 -I$(IDIR) -I/usr/include -I/usr/include/hdf5/serial -Wall
 	LFLAGS= -L$(LDIR)
 endif
+ifeq ($(OS),Ubuntu)
+	CC=g++
+	CXX=h5c++
+	CFLAGS= -std=c++11 -O3 -I$(IDIR) -I/usr/include -I/usr/include/hdf5/serial/ -Wall
+	LFLAGS= -L$(LDIR)
+endif
 ifeq ($(UNAME_S),Darwin)
+	CC=g++
+	cXX=g++
 	CFLAGS= -std=c++11 -O3 -I$(IDIR) -I/usr/include -I/Users/lucaspeng/git/googletest/googletest/include  -Wall
 	LFLAGS= -L/Users/lucaspeng/git/googletest/googletest -L$(LDIR)
 endif
@@ -31,10 +41,10 @@ $(ODIR)/%.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 main: $(OBJ)
-	$(CC) -o $(BDIR)/$@ $^ $(CFLAGS) $(LFLAGS) $(LIBS)
+	$(CXX) -o $(BDIR)/$@ $^ $(CFLAGS) $(LFLAGS) $(LIBS)
 
 main_test: $(OBJ_test)
-	$(CC) -o $(BDIR)/$@ $^ $(CFLAGS) $(LFLAGS) $(LIBS)
+	$(CXX) -o $(BDIR)/$@ $^ $(CFLAGS) $(LFLAGS) $(LIBS)
 
 .PHONY: clean
 
