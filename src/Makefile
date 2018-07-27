@@ -3,9 +3,13 @@ IDIR =../include
 ODIR=obj
 LDIR =../lib
 BDIR = ../build
+GTEST_IDIR = /Users/lucaspeng/git_packages/googletest/googletest/include
+GTEST_INSTALL = /Users/lucaspeng/git_packages/googletest/googletest/install
 
 UNAME_S := $(shell uname -s)
-OS := $(shell lsb_release -si)
+ifeq ($(UNAME_S),Linux)
+    OS := $(shell lsb_release -si)
+endif
 ifeq ($(UNAME_S),Linux)
 	CC=g++
 	CXX=g++
@@ -21,8 +25,8 @@ endif
 ifeq ($(UNAME_S),Darwin)
 	CC=g++
 	cXX=g++
-	CFLAGS= -std=c++11 -O3 -I$(IDIR) -I/usr/include -I/Users/lucaspeng/git/googletest/googletest/include  -Wall
-	LFLAGS= -L/Users/lucaspeng/git/googletest/googletest -L$(LDIR)
+	CFLAGS= -std=c++11 -O3 -I$(IDIR) -I/usr/include -I$(GTEST_IDIR)  -Wall
+	LFLAGS= -L$(GTEST_INSTALL) -L$(LDIR)
 endif
 
 

@@ -50,7 +50,7 @@ namespace fileio
     // catch failure caused by the DataSpace operations
     catch( DataSpaceIException error )
       {
-        error.printError();
+        //error.printError();
         exit(EXIT_FAILURE);
       }
     catch (std::length_error error)
@@ -144,19 +144,19 @@ namespace fileio
     catch( FileIException error )
       {
         LOG(ERROR) << "cant write file: "<< filename << ", with dataset: " << datasetname << std::endl;
-        error.printError();
+        //error.printError();
         exit(EXIT_FAILURE);
       }
     catch( DataSetIException error )
       {
         LOG(ERROR) << "cant write file: "<< filename << ", with dataset: " << datasetname << std::endl;
-        error.printError();
+        //error.printError();
         exit(EXIT_FAILURE);
       }
     catch( DataSpaceIException error )
       {
         LOG(ERROR) << "cant write file: "<< filename << ", with dataset: " << datasetname << std::endl;
-        error.printError();
+        //error.printError();
         exit(EXIT_FAILURE);
       }
   }
@@ -244,19 +244,19 @@ namespace fileio
     catch( FileIException error )
       {
         LOG(ERROR) << "can't write file: "<< filename << ", with dataset: " << datasetname << std::endl;
-        error.printError();
+        //error.printError();
         exit(EXIT_FAILURE);
       }
     catch( DataSetIException error )
       {
         LOG(ERROR) << "can't write file: "<< filename << ", with dataset: " << datasetname << std::endl;
-        error.printError();
+        //error.printError();
         exit(EXIT_FAILURE);
       }
     catch( DataSpaceIException error )
       {
         LOG(ERROR) << "can't write file: "<< filename << ", with dataset: " << datasetname << std::endl;
-        error.printError();
+        //error.printError();
         exit(EXIT_FAILURE);
       }
   }
